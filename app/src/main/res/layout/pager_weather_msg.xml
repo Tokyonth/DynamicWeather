@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:background="@drawable/bg_pager_weather"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="24dp">
+
+    <RelativeLayout
+        android:layout_width="120dp"
+        android:layout_height="match_parent">
+
+        <com.tokyonth.weather.view.WindmillView
+            android:id="@+id/windmill_big"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            app:windLengthParent="0.35"
+            app:windmillColors="@android:color/white" />
+
+        <com.tokyonth.weather.view.WindmillView
+            android:id="@+id/windmill_small"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignBottom="@+id/windmill_big"
+            android:layout_alignParentEnd="true"
+            app:windLengthParent="0.35"
+            app:windmillColors="@android:color/white" />
+
+        <TextView
+            android:id="@+id/weather_wind_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/windmill_big"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="16dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+
+            tools:text="东北风 4级" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/weather_humidity_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+
+            tools:text="86%" />
+
+        <TextView
+            android:id="@+id/weather_pressure_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_humidity_tv"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+
+            tools:text="900" />
+
+        <TextView
+            android:id="@+id/weather_wind_speed_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_pressure_tv"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/white"
+
+            tools:text="900" />
+
+        <ImageView
+            android:id="@+id/weather_forecast_hourly_tips_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@id/weather_wind_speed_tv"
+            android:layout_marginTop="16dp"
+
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/weather_forecast_hourly_tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/weather_forecast_hourly_tips_iv"
+            android:layout_alignBottom="@+id/weather_forecast_hourly_tips_iv"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@+id/weather_forecast_hourly_tips_iv"
+            android:textColor="@android:color/white"
+            tools:text="多云" />
+
+        <TextView
+            android:id="@+id/weather_forecast_day_tips_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/weather_forecast_hourly_tips_iv"
+            android:layout_marginTop="16dp"
+            android:drawablePadding="12dp"
+            android:textColor="@android:color/white"
+
+            tools:text="7:00 - 18:54" />
+
+    </RelativeLayout>
+
+</LinearLayout>

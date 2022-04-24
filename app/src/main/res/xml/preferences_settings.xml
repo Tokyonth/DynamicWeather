@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/summary_notification">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_announcement"
+            app:key="@string/key_preference_notification"
+            app:summaryOff="@string/summary_text_off"
+            app:summaryOn="@string/summary_text_on"
+            app:title="@string/summary_notification_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/summary_personalise_title">
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_broken_image"
+            app:key="@string/key_preference_image_bg"
+            app:summaryOff="@string/summary_text_off"
+            app:summaryOn="@string/summary_text_on"
+            app:title="@string/summary_image_background" />
+
+        <Preference
+            app:icon="@drawable/ic_all_inbox"
+            app:key="@string/key_preference_choose_image"
+            app:title="@string/summary_choice_image" />
+
+        <SwitchPreferenceCompat
+            app:icon="@drawable/ic_texture"
+            app:key="@string/key_preference_blur_pager"
+            app:summaryOff="@string/summary_text_off"
+            app:summaryOn="@string/summary_text_on"
+            app:title="@string/summary_blur_pager" />
+
+        <SeekBarPreference
+            app:icon="@drawable/ic_blur_circular"
+            app:key="@string/key_preference_blur_radius"
+            app:showSeekBarValue="true"
+            app:summary="@string/summary_blur_radius"
+            app:title="@string/summary_blur_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/summary_other_title">
+
+        <Preference
+            app:icon="@drawable/ic_code"
+            app:key="@string/key_preference_open_source"
+            app:title="@string/summary_open_source" />
+
+        <Preference
+            app:icon="@drawable/ic_info"
+            app:key="@string/key_preference_about"
+            app:summary="Version 1.0"
+            app:title="@string/summary_about" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

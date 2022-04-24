@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_city"
+        android:icon="@drawable/ic_city_manager"
+        android:orderInCategory="0"
+        android:title="@string/title_menu_city_manager"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_warning"
+        android:orderInCategory="1"
+        android:title="@string/title_menu_warning"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="2"
+        android:title="@string/title_menu_settings"
+        app:showAsAction="never" />
+
+</menu>

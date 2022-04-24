@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_preference_notification">preferenceNotification</string>
+    <string name="key_preference_image_bg">preferenceImageBg</string>
+    <string name="key_preference_choose_image">preferenceChooseImage</string>
+    <string name="key_preference_blur_pager">preferenceBlurPager</string>
+    <string name="key_preference_blur_radius">preferenceBlurRadius</string>
+    <string name="key_preference_open_source">preferenceOpenSource</string>
+    <string name="key_preference_about">preferenceAbout</string>
+</resources>

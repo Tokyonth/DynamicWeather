@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/bg_bottom_sheet_dialog.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_add.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_all_inbox.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_info.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_leaves.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_more.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_nothing.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_texture.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable-v24/ic_title_local.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/bg_gray_round.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/bg_index_item.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/bg_pager_simple_tip.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/bg_pager_weather.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/bg_weather_default.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/bg_white_card.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_add.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_announcement.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_arrow_right.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_blur_circular.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_broken_image.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_city_manager.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_code.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_filter_vintage.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_leaves.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_shard.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_sun.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_sunrise.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_sunset.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/drawable/ic_title_local.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/activity_about.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/activity_city.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/activity_main.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/activity_settings.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/activity_splash.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/activity_warning.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/fragment_weather.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/item_city_manage.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/item_hot_city.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/item_index_weather.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/item_search_city.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/item_warning.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/item_weather_trend.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/layout_city_adds.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/layout_notifition_weather.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/layout_toolbar.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/pager_weather_aqi.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/layout/pager_weather_msg.xml" value="0.17806484295845998" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/menu/menu_about.xml" value="0.287962962962963" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/menu/menu_main.xml" value="0.287962962962963" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1785" />
+        <entry key="..\:/AndroidProjects/DynamicWeather/app/src/main/res/xml/preferences_settings.xml" value="0.17806484295845998" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SunriseSunsetView">
+        <attr name="ssvTrackColor" format="color|reference" />
+        <attr name="ssvTrackWidth" format="dimension" />
+        <attr name="ssvSunRadius" format="dimension" />
+        <attr name="ssvSunColor" format="color|reference" />
+        <attr name="ssvShadowColor" format="color|reference" />
+        <attr name="ssvLabelTextSize" format="dimension" />
+        <attr name="ssvLabelTextColor" format="color|reference" />
+        <attr name="ssvLabelVerticalOffset" format="dimension" />
+        <attr name="ssvLabelHorizontalOffset" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="SemicircleProgressView">
+        <attr name="semicircleSize" format="dimension" />
+        <attr name="semicircleBackgroundLineColor" format="color" />
+        <attr name="semicircleFrontLineColor" format="color" />
+        <attr name="semicircleTitleColor" format="color" />
+        <attr name="semicircleSubtitleColor" format="color" />
+        <attr name="semicircleLineSize" format="dimension" />
+        <attr name="semicircleTitleSize" format="dimension" />
+        <attr name="semicircleSubtitleSize" format="dimension" />
+        <attr name="semicircleTitleText" format="string" />
+        <attr name="semicircleSubtitleText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="WindmillView">
+        <attr name="windmillColors" format="color|reference" />
+        <attr name="windLengthParent" format="float" />
+    </declare-styleable>
+
+    <declare-styleable name="BurnRoundView">
+        <attr name="burnOpen" format="boolean" />
+        <attr name="burnColor" format="color" />
+        <attr name="burnSrc" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="FontTextView">
+        <attr name="fontType" format="enum">
+            <enum name="TEMP" value="0" />
+            <enum name="ENGLISH" value="1" />
+        </attr>
+    </declare-styleable>
+
+</resources>
