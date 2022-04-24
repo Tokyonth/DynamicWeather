@@ -66,7 +66,7 @@ class CityHotAdapter : RecyclerView.Adapter<CityHotAdapter.HotCityViewHolder>() 
                 "", ""
             )
         } else {
-            DbManager.db.queryCityByName(name)!!
+            DbManager.db.queryLocationByName(name)!!
         }
     }
 

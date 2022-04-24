@@ -7,9 +7,9 @@ object Constants {
     const val IMPORT_DATA = "importData"
     const val CITY_SELECT_RESULT = "cityResult"
 
-    const val DB_SQL_NAME = "cityDb"
-    const val DB_CITY_INFO_TABLE = "cityInfo"
-    const val DB_SAVED_CITY_TABLE = "savedCity"
+    const val DB_SQL_NAME = "locationDb"
+    const val DB_LOCATION_INFO_TABLE = "locationInfo"
+    const val DB_SAVED_LOCATION_TABLE = "savedLocation"
 
     const val INTENT_CITY_CODE = "cityCode"
     const val INTENT_CITY_NAME = "cityName"

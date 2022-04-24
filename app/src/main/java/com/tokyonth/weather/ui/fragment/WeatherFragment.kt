@@ -53,7 +53,7 @@ class WeatherFragment : BaseFragment() {
             isLoaded = true
         }
 
-        dyModel.cityChange.value = cityName
+        dyModel.cityChangeLiveData.value = cityName
     }
 
     override fun initObserve() {

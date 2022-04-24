@@ -38,10 +38,9 @@ class CityImportViewModel(application: Application) : BaseViewModel(application)
     fun importCityData() {
         viewModelScope.launch {
             val parseData = parseCityCsv().toTypedArray()
-            DbManager.db.getCityDao().insertCity(*parseData).let {
+            DbManager.db.getLocationDao().insertLocation(*parseData).let {
                 importCityLiveData.value = it.size == parseData.size
             }
-
         }
     }
 

@@ -126,7 +126,7 @@ class CitySheetDialog : BottomSheetDialogFragment() {
             foundCityEntryList.clear()
             val strTrim = text.toString().trim { it <= ' ' }
             if (strTrim.isNotEmpty()) {
-                val sqlData = DbManager.db.dimQueryCityByName(strTrim)
+                val sqlData = DbManager.db.dimQueryLocationByName(strTrim)
                 if (!sqlData.isNullOrEmpty()) {
                     foundCityEntryList.addAll(sqlData)
                 }

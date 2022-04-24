@@ -6,23 +6,23 @@ import androidx.lifecycle.viewModelScope
 import com.tokyonth.weather.base.BaseViewModel
 import com.tokyonth.weather.data.entity.LocationEntity
 import com.tokyonth.weather.data.db.DbManager
-import com.tokyonth.weather.data.entity.SavedCityEntity
+import com.tokyonth.weather.data.entity.SavedLocationEntity
 import com.tokyonth.weather.data.hf.WeatherNow
 import kotlinx.coroutines.launch
 
 class CityViewModel(application: Application) : BaseViewModel(application) {
 
-    val allSavedCityLiveData = MutableLiveData<MutableList<SavedCityEntity>>()
+    val allSavedCityLiveData = MutableLiveData<MutableList<SavedLocationEntity>>()
 
     var foldWeatherLiveData = MutableLiveData<Pair<Int, WeatherNow>>()
 
-    val savedCityLiveData = MutableLiveData<SavedCityEntity>()
+    val savedCityLiveData = MutableLiveData<SavedLocationEntity>()
 
     val deleteCityLiveData = MutableLiveData<Int>()
 
     fun getAllSavedCity() {
         viewModelScope.launch {
-            val all = DbManager.db.getCityDao().queryAllSavedCity()
+            val all = DbManager.db.getLocationDao().queryAllSavedLocation()
             allSavedCityLiveData.value = all.toMutableList()
         }
     }
@@ -36,9 +36,9 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
             })*/
     }
 
-    fun deleteCity(position: Int, savedCityEntity: SavedCityEntity) {
+    fun deleteCity(position: Int, savedLocationEntity: SavedLocationEntity) {
         viewModelScope.launch {
-            val state = DbManager.db.getCityDao().deleteSavedCity(savedCityEntity)
+            val state = DbManager.db.getLocationDao().deleteSavedLocation(savedLocationEntity)
             deleteCityLiveData.value = if (state < 0) {
                 -1
             } else {
@@ -50,14 +50,14 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
     fun saveCity(locationEntity: LocationEntity) {
         val savedCityEntity = fillSavedCity(locationEntity)
         viewModelScope.launch {
-            val id = DbManager.db.getCityDao().insertSavedCity(savedCityEntity)
+            val id = DbManager.db.getLocationDao().insertSavedLocation(savedCityEntity)
             savedCityEntity.autoId = id[0]
             savedCityLiveData.value = savedCityEntity
         }
     }
 
-    private fun fillSavedCity(locationEntity: LocationEntity): SavedCityEntity {
-        return SavedCityEntity(
+    private fun fillSavedCity(locationEntity: LocationEntity): SavedLocationEntity {
+        return SavedLocationEntity(
             0,
             locationEntity.locationId,
             locationEntity.locationNameZH,
@@ -66,7 +66,7 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
         )
     }
 
-    fun fillWeather(source: SavedCityEntity, weatherNow: WeatherNow) {
+    fun fillWeather(source: SavedLocationEntity, weatherNow: WeatherNow) {
         val result = source.apply {
 /*            name = weatherNow.weather
             temp = weatherNow.temp
@@ -77,7 +77,7 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
             isInTime = DateUtils.dayOrNightByInt(weatherEntity)*/
         }
         viewModelScope.launch {
-            DbManager.db.getCityDao().updateSavedCity(result)
+            DbManager.db.getLocationDao().updateSavedLocation(result)
         }
     }
 

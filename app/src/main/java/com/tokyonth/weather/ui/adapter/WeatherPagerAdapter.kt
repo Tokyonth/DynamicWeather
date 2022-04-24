@@ -6,20 +6,20 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 import com.tokyonth.weather.Constants
-import com.tokyonth.weather.data.entity.SavedCityEntity
+import com.tokyonth.weather.data.entity.SavedLocationEntity
 import com.tokyonth.weather.ui.fragment.WeatherFragment
 
 import java.util.ArrayList
 
 class WeatherPagerAdapter(
-    private val cityList: List<SavedCityEntity>,
+    private val locationList: List<SavedLocationEntity>,
     fragmentActivity: FragmentActivity
 ) : FragmentStateAdapter(fragmentActivity) {
 
     private val fragmentList: MutableList<Fragment> = ArrayList()
 
     init {
-        cityList.forEach { _ ->
+        locationList.forEach { _ ->
             fragmentList.add(WeatherFragment())
         }
     }
@@ -27,8 +27,8 @@ class WeatherPagerAdapter(
     override fun createFragment(position: Int): Fragment {
         return fragmentList[position].apply {
             arguments = bundleOf(
-                Pair(Constants.INTENT_CITY_CODE, cityList[position].locationId),
-                Pair(Constants.INTENT_CITY_NAME, cityList[position].locationName)
+                Pair(Constants.INTENT_CITY_CODE, locationList[position].locationId),
+                Pair(Constants.INTENT_CITY_NAME, locationList[position].locationName)
             )
         }
     }

@@ -2,9 +2,10 @@ package com.tokyonth.weather.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+
 import com.tokyonth.weather.Constants
 
-@Entity(tableName = Constants.DB_CITY_INFO_TABLE)
+@Entity(tableName = Constants.DB_LOCATION_INFO_TABLE)
 data class LocationEntity(
     @PrimaryKey(autoGenerate = true)
     var autoId: Long,

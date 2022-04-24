@@ -1,36 +1,36 @@
 package com.tokyonth.weather.data.db
 
 import androidx.room.*
+
 import com.tokyonth.weather.Constants
 import com.tokyonth.weather.data.entity.LocationEntity
-
-import com.tokyonth.weather.data.entity.SavedCityEntity
+import com.tokyonth.weather.data.entity.SavedLocationEntity
 
 @Dao
 interface LocationDao {
 
-    @Query("SELECT * FROM ${Constants.DB_CITY_INFO_TABLE} WHERE locationNameZH LIKE '%' || :mCityName || '%' ")
-    suspend fun dimQueryCityByName(mCityName: String): List<LocationEntity>
+    @Query("SELECT * FROM ${Constants.DB_LOCATION_INFO_TABLE} WHERE locationNameZH LIKE '%' || :mCityName || '%' ")
+    suspend fun dimQueryLocationByName(mCityName: String): List<LocationEntity>
 
-    @Query("SELECT * FROM ${Constants.DB_CITY_INFO_TABLE} WHERE locationNameZH =:mCityName")
-    suspend fun queryCityByName(mCityName: String): LocationEntity?
+    @Query("SELECT * FROM ${Constants.DB_LOCATION_INFO_TABLE} WHERE locationNameZH =:mCityName")
+    suspend fun queryLocationByName(mCityName: String): LocationEntity?
 
-    @Query("SELECT * FROM ${Constants.DB_CITY_INFO_TABLE} WHERE adCode =:mCityId")
-    suspend fun queryCityById(mCityId: String): LocationEntity?
+    @Query("SELECT * FROM ${Constants.DB_LOCATION_INFO_TABLE} WHERE adCode =:mCityId")
+    suspend fun queryLocationById(mCityId: String): LocationEntity?
 
-    @Query("SELECT * FROM ${Constants.DB_SAVED_CITY_TABLE}")
-    suspend fun queryAllSavedCity(): List<SavedCityEntity>
+    @Query("SELECT * FROM ${Constants.DB_SAVED_LOCATION_TABLE}")
+    suspend fun queryAllSavedLocation(): List<SavedLocationEntity>
 
     @Delete
-    suspend fun deleteSavedCity(savedCityEntity: SavedCityEntity): Int
+    suspend fun deleteSavedLocation(savedLocationEntity: SavedLocationEntity): Int
 
     @Update
-    suspend fun updateSavedCity(savedCityEntity: SavedCityEntity): Int
+    suspend fun updateSavedLocation(savedLocationEntity: SavedLocationEntity): Int
 
     @Insert
-    suspend fun insertCity(vararg city: LocationEntity): List<Long>
+    suspend fun insertLocation(vararg city: LocationEntity): List<Long>
 
     @Insert
-    suspend fun insertSavedCity(vararg city: SavedCityEntity): List<Long>
+    suspend fun insertSavedLocation(vararg location: SavedLocationEntity): List<Long>
 
 }

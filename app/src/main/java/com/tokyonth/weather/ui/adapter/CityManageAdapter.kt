@@ -8,8 +8,7 @@ import android.view.View
 
 import com.tokyonth.weather.R
 import com.tokyonth.weather.databinding.ItemCityManageBinding
-import com.tokyonth.weather.data.entity.SavedCityEntity
-import com.tokyonth.weather.data.WeatherHelper
+import com.tokyonth.weather.data.entity.SavedLocationEntity
 import com.tokyonth.weather.utils.ktx.string
 
 class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewHolder>() {
@@ -24,20 +23,20 @@ class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewH
 
     private var listener: OnItemClickListener? = null
 
-    private var savedCityList: MutableList<SavedCityEntity> = ArrayList()
+    private var savedLocationList: MutableList<SavedLocationEntity> = ArrayList()
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setData(list: MutableList<SavedCityEntity>) {
-        savedCityList.addAll(list)
+    fun setData(list: MutableList<SavedLocationEntity>) {
+        savedLocationList.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun getData(): MutableList<SavedCityEntity> {
-        return savedCityList
+    fun getData(): MutableList<SavedLocationEntity> {
+        return savedLocationList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityManageViewHolder {
@@ -46,20 +45,20 @@ class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewH
     }
 
     override fun onBindViewHolder(holder: CityManageViewHolder, position: Int) {
-        holder.bind(listener!!, savedCityList[position])
+        holder.bind(listener!!, savedLocationList[position])
     }
 
     override fun getItemCount(): Int {
-        return savedCityList.size
+        return savedLocationList.size
     }
 
     class CityManageViewHolder(private val vb: ItemCityManageBinding) :
         RecyclerView.ViewHolder(vb.root) {
 
-        fun bind(listener: OnItemClickListener, savedCityEntity: SavedCityEntity) {
-            setWeatherInfo(savedCityEntity)
-            vb.tvCityItemName.text = savedCityEntity.locationName
-            if (savedCityEntity.locationId.isEmpty()) {
+        fun bind(listener: OnItemClickListener, savedLocationEntity: SavedLocationEntity) {
+            setWeatherInfo(savedLocationEntity)
+            vb.tvCityItemName.text = savedLocationEntity.locationName
+            if (savedLocationEntity.locationId.isEmpty()) {
                 vb.ivCityItemLocal.visibility = View.VISIBLE
             }
             vb.root.setOnClickListener { v: View ->
@@ -72,13 +71,13 @@ class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewH
         }
 
         @SuppressLint("SetTextI18n")
-        private fun setWeatherInfo(savedCityEntity: SavedCityEntity) {
-            if (savedCityEntity.locationName.isEmpty()) {
+        private fun setWeatherInfo(savedLocationEntity: SavedLocationEntity) {
+            if (savedLocationEntity.locationName.isEmpty()) {
                 vb.tvCityItemWeather.text = "0"
                 vb.tvAirAndTemp.text = "N/A"
                 vb.ivCityItemWeather.setImageResource(R.drawable.ic_nothing)
             } else {
-                vb.tvCityItemWeather.text = savedCityEntity.temp + string(R.string.celsius)
+                vb.tvCityItemWeather.text = savedLocationEntity.temp + string(R.string.celsius)
            //     val weatherImagePath = WeatherHelper.getWeatherImagePath(savedCityEntity.img!!)
 //                vb.root.background = WeatherHelper.getWeatherBackground(savedCityEntity.img!!)
              //   vb.ivCityItemWeather.setImageResource(weatherImagePath)
