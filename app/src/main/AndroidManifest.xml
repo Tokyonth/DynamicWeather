@@ -59,6 +59,7 @@
             android:name=".ui.activity.AboutActivity"
             android:theme="@style/Theme.Weather.NoActionBar" />
 
+        <!--自行申请高德定位KEY-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="c8db2524c8687ebd2919d7942e9f8409" />
