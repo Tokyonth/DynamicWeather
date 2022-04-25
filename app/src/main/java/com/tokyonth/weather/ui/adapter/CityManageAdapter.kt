@@ -70,14 +70,13 @@ class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewH
             }
         }
 
-        @SuppressLint("SetTextI18n")
         private fun setWeatherInfo(savedLocationEntity: SavedLocationEntity) {
             if (savedLocationEntity.locationName.isEmpty()) {
                 vb.tvCityItemWeather.text = "0"
                 vb.tvAirAndTemp.text = "N/A"
                 vb.ivCityItemWeather.setImageResource(R.drawable.ic_nothing)
             } else {
-                vb.tvCityItemWeather.text = savedLocationEntity.temp + string(R.string.celsius)
+                vb.tvCityItemWeather.text = string(R.string.celsius, savedLocationEntity.temp)
            //     val weatherImagePath = WeatherHelper.getWeatherImagePath(savedCityEntity.img!!)
 //                vb.root.background = WeatherHelper.getWeatherBackground(savedCityEntity.img!!)
              //   vb.ivCityItemWeather.setImageResource(weatherImagePath)

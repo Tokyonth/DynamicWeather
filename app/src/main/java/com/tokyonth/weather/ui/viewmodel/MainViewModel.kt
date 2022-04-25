@@ -9,9 +9,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : DynamicViewModel(application) {
 
-    private val _savedAllCityLiveData = MutableLiveData<List<SavedLocationEntity>>()
-
-    val savedAllCityLiveData = _savedAllCityLiveData
+    val savedAllCityLiveData = MutableLiveData<List<SavedLocationEntity>>()
 
     fun getAllCityCount() {
         viewModelScope.launch {

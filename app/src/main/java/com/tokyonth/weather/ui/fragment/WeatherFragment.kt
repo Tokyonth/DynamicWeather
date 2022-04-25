@@ -1,6 +1,6 @@
 package com.tokyonth.weather.ui.fragment
 
-import android.widget.LinearLayout
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 
@@ -34,6 +34,10 @@ class WeatherFragment : BaseFragment() {
     }
 
     override fun initView() {
+        binding.refreshWeatherView.setOnRefreshListener {
+            binding.refreshWeatherView.isRefreshing = true
+            model.refreshWeather()
+        }
 /*        binding.nestRoot.post {
             binding.consTemp.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, binding.nestRoot.height
@@ -80,6 +84,13 @@ class WeatherFragment : BaseFragment() {
 
         model.sunLiveData.observe(viewLifecycleOwner) {
             SsvWeatherProvider().attach(it, binding)
+        }
+
+        model.refreshLiveData.observe(viewLifecycleOwner) {
+            Log.e("完成接口-->", it.toString())
+            if (it >= 5) {
+                binding.refreshWeatherView.isRefreshing = false
+            }
         }
     }
 

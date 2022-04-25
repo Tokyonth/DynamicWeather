@@ -1,117 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_weather_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.tokyonth.weather.view.AutoFullLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.tokyonth.weather.view.AutoFullLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <com.tokyonth.weather.view.FontTextView
-                android:id="@+id/tv_weather_temp"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.tokyonth.weather.view.FontTextView
+                    android:id="@+id/tv_weather_temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="72sp"
+                    app:fontType="TEMP"
+                    app:layout_constraintBottom_toTopOf="@id/daily_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="32" />
+
+                <TextView
+                    android:id="@+id/tv_weather_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_pager_simple_tips"
+                    android:gravity="center"
+                    android:paddingLeft="26dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="26dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="@android:color/white"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_weather_temp"
+                    tools:visibility="visible" />
+
+                <com.tokyonth.weather.view.DailyForecastView
+                    android:id="@+id/daily_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:layout_margin="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_weather_trend"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="12dp"
-                android:textColor="@android:color/white"
-                android:textSize="72sp"
-                app:fontType="TEMP"
-                app:layout_constraintBottom_toTopOf="@id/daily_view"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="32" />
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/bg_pager_weather" />
+
+            <include
+                android:id="@+id/pager_weather_msg"
+                layout="@layout/pager_weather_msg" />
+
+            <include
+                android:id="@+id/pager_weather_aqi"
+                layout="@layout/pager_weather_aqi" />
+
+            <com.tokyonth.weather.view.sunrisesunset.SunriseSunsetView
+                android:id="@+id/ssv_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/bg_pager_weather"
+                android:padding="16dp"
+                app:ssvLabelHorizontalOffset="12dp"
+                app:ssvLabelTextColor="@android:color/white"
+                app:ssvLabelTextSize="12sp"
+                app:ssvLabelVerticalOffset="2dp"
+                app:ssvShadowColor="#2CEBEBEB"
+                app:ssvSunRadius="6dp"
+                app:ssvTrackColor="@android:color/white"
+                app:ssvTrackWidth="1.5dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/weather_index_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/bg_pager_weather"
+                android:overScrollMode="never"
+                android:padding="12dp" />
 
             <TextView
-                android:id="@+id/tv_weather_tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_pager_simple_tips"
-                android:gravity="center"
-                android:paddingLeft="26dp"
-                android:paddingTop="10dp"
-                android:paddingRight="26dp"
-                android:paddingBottom="10dp"
-                android:textColor="@android:color/white"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_weather_temp"
-                tools:visibility="visible" />
-
-            <com.tokyonth.weather.view.DailyForecastView
-                android:id="@+id/daily_view"
                 android:layout_width="match_parent"
-                android:layout_height="240dp"
-                android:layout_margin="16dp"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:padding="6dp"
+                android:text="@string/text_source_hefeng"
+                android:textColor="@color/divider"
+                android:textSize="12sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.tokyonth.weather.view.AutoFullLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_weather_trend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/bg_pager_weather" />
+    </androidx.core.widget.NestedScrollView>
 
-        <include
-            android:id="@+id/pager_weather_msg"
-            layout="@layout/pager_weather_msg" />
-
-        <include
-            android:id="@+id/pager_weather_aqi"
-            layout="@layout/pager_weather_aqi" />
-
-        <com.tokyonth.weather.view.sunrisesunset.SunriseSunsetView
-            android:id="@+id/ssv_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/bg_pager_weather"
-            android:padding="16dp"
-            app:ssvLabelHorizontalOffset="12dp"
-            app:ssvLabelTextColor="@android:color/white"
-            app:ssvLabelTextSize="12sp"
-            app:ssvLabelVerticalOffset="2dp"
-            app:ssvShadowColor="#2CEBEBEB"
-            app:ssvSunRadius="6dp"
-            app:ssvTrackColor="@android:color/white"
-            app:ssvTrackWidth="1.5dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/weather_index_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/bg_pager_weather"
-            android:overScrollMode="never"
-            android:padding="12dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:padding="6dp"
-            android:text="@string/text_source_hefeng"
-            android:textColor="@color/divider"
-            android:textSize="12sp" />
-
-    </com.tokyonth.weather.view.AutoFullLayout>
-
-</androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

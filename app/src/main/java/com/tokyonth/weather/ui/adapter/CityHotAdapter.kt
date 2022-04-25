@@ -57,14 +57,7 @@ class CityHotAdapter : RecyclerView.Adapter<CityHotAdapter.HotCityViewHolder>() 
 
     private fun composeCity(name: String): LocationEntity {
         return if (name == hotCityList[0]) {
-            LocationEntity(
-                0, "", "",
-                name, "", "",
-                "", "",
-                "", "",
-                "", "", "",
-                "", ""
-            )
+            LocationEntity(name)
         } else {
             DbManager.db.queryLocationByName(name)!!
         }

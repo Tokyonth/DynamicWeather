@@ -7,6 +7,7 @@ import com.tokyonth.weather.App
 import com.tokyonth.weather.base.BaseViewModel
 import com.tokyonth.weather.data.entity.LocationEntity
 import com.tokyonth.weather.data.db.DbManager
+import com.tokyonth.weather.utils.AssetsZipUtils
 import kotlinx.coroutines.launch
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -37,11 +38,20 @@ class CityImportViewModel(application: Application) : BaseViewModel(application)
 
     fun importCityData() {
         viewModelScope.launch {
+            unzipIcons()
             val parseData = parseCityCsv().toTypedArray()
             DbManager.db.getLocationDao().insertLocation(*parseData).let {
                 importCityLiveData.value = it.size == parseData.size
             }
         }
+    }
+
+    private fun unzipIcons() {
+        AssetsZipUtils.unZipAssetsFolder(
+            getApplication(),
+            "icons.zip",
+            App.context.cacheDir.absolutePath
+        )
     }
 
 }

@@ -59,11 +59,6 @@ class MainActivity : BaseActivity() {
             ContextCompat.getDrawable(this, R.drawable.ic_more)
         supportActionBar?.setHomeButtonEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
-        binding.refreshWeatherView.setOnRefreshListener {
-            binding.refreshWeatherView.isRefreshing = true
-            // model.refreshWeather()
-        }
     }
 
     override fun initObserve() {

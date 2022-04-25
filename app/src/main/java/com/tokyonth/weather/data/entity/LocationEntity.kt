@@ -23,4 +23,15 @@ data class LocationEntity(
     var latitude: String,
     var longitude: String,
     var adCode: String
-)
+) {
+
+    constructor(locationName: String) : this(
+        0, "", "",
+        locationName, "", "",
+        "", "",
+        "", "",
+        "", "", "",
+        "", ""
+    )
+
+}

@@ -8,15 +8,9 @@ import com.tokyonth.weather.base.BaseViewModel
 import com.tokyonth.weather.data.hf.*
 import com.tokyonth.weather.network.ApiRepository
 import com.tokyonth.weather.network.requestResult
+import com.tokyonth.weather.utils.FileUtils
 
 class WeatherViewModel(application: Application) : BaseViewModel(application) {
-
-    companion object {
-
-        private val SNAPSHOT_PATH =
-            App.context.getExternalFilesDir("weather")!!.absolutePath + "/snapshot.json"
-
-    }
 
     var nowLiveData = MutableLiveData<WeatherNow>()
 
@@ -32,11 +26,16 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
 
     var errorLiveData = MutableLiveData<String>()
 
-    var refreshLiveData = MutableLiveData<Boolean>()
+    var refreshLiveData = MutableLiveData<Int>()
+
+    private val infoCache = HashMap<String, String>()
+
+    private var onFinishedApi = 0
 
     fun getCityWeather(locationCode: String) {
         requestResult(
             apiBlock = {
+                infoCache["locationCode"] = locationCode
                 ApiRepository.api.weatherNow(locationCode)
             },
             onSuccess = {
@@ -44,6 +43,10 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
             },
             onError = {
                 errorLiveData.value = it.errorMsg
+            },
+            onFinished = {
+                onFinishedApi++
+                refreshLiveData.value = onFinishedApi
             })
     }
 
@@ -57,6 +60,10 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
             },
             onError = {
                 errorLiveData.value = it.errorMsg
+            },
+            onFinished = {
+                onFinishedApi++
+                refreshLiveData.value = onFinishedApi
             })
     }
 
@@ -70,6 +77,10 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
             },
             onError = {
                 errorLiveData.value = it.errorMsg
+            },
+            onFinished = {
+                onFinishedApi++
+                refreshLiveData.value = onFinishedApi
             })
     }
 
@@ -83,12 +94,17 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
             },
             onError = {
                 errorLiveData.value = it.errorMsg
+            },
+            onFinished = {
+                onFinishedApi++
+                refreshLiveData.value = onFinishedApi
             })
     }
 
     fun getLifeWeather(locationCode: String, type: String) {
         requestResult(
             apiBlock = {
+                infoCache["indicesType"] = locationCode
                 ApiRepository.api.weatherIndices(locationCode, type)
             },
             onSuccess = {
@@ -96,12 +112,17 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
             },
             onError = {
                 errorLiveData.value = it.errorMsg
+            },
+            onFinished = {
+                onFinishedApi++
+                refreshLiveData.value = onFinishedApi
             })
     }
 
     fun getSunWeather(locationCode: String, date: String) {
         requestResult(
             apiBlock = {
+                infoCache["sunData"] = locationCode
                 ApiRepository.api.weatherSun(locationCode, date)
             },
             onSuccess = {
@@ -109,15 +130,35 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
             },
             onError = {
                 errorLiveData.value = it.errorMsg
+            },
+            onFinished = {
+                onFinishedApi++
+                refreshLiveData.value = onFinishedApi
             })
     }
 
-    fun loadSnapshot() {
-/*        val json = FileUtils.read(SNAPSHOT_PATH)
+    fun refreshWeather() {
+        val locationCode = infoCache["locationCode"]
+        val indicesType = infoCache["indicesType"]
+        val sunData = infoCache["sunData"]
+        if (locationCode != null) {
+            getCityWeather(locationCode)
+            get24HourWeather(locationCode)
+            get7DayWeather(locationCode)
+            getAirWeather(locationCode)
+            getLifeWeather(locationCode, indicesType!!)
+            //  getSunWeather(locationCode, sunData!!)
+        }
+    }
+
+    fun loadSnapshot(locationCode: String) {
+        val path =
+            App.context.getExternalFilesDir("weather")?.absolutePath + "/snapshot-$locationCode.json"
+        val json = FileUtils.read(path)
         if (json != null) {
-            val snapshot = Gson().fromJson(json, WeatherEntity::class.java)
-            successLiveData.value = snapshot
-        }*/
+            //  val snapshot = Gson().fromJson(json, WeatherEntity::class.java)
+            //  successLiveData.value = snapshot
+        }
     }
 
 }

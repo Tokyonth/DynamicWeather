@@ -2,7 +2,7 @@
     <string name="app_name">天气</string>
     <string name="author">Author TOKYONTH</string>
     <string name="version">Version </string>
-    <string name="celsius">℃</string>
+    <string name="celsius">%s ℃</string>
     <string name="degree">°</string>
 
     <string name="text_positioning">定位中…</string>
