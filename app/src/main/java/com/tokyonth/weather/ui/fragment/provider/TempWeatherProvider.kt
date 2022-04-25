@@ -12,7 +12,7 @@ class TempWeatherProvider : BaseWeatherProvider<WeatherNow, FragmentWeatherBindi
         val tempInfo = getData().now.temp + string(R.string.degree)
         binding.run {
             tvWeatherTips.visibility = View.VISIBLE
-            tvWeatherTips.text = getData().now.text
+            tvWeatherTips.text = getData().now.text + " - 体感: " + getData().now.feelsLike + string(R.string.degree)
             tvWeatherTemp.text = tempInfo
         }
 

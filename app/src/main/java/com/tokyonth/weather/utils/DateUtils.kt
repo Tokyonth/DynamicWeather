@@ -27,4 +27,8 @@ object DateUtils {
         return d1.format(p!!)
     }
 
+    fun nowDay(): String {
+        return "2022425"
+    }
+
 }

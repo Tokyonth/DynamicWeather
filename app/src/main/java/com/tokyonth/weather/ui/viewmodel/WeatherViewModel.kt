@@ -20,23 +20,24 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
 
     var lifeLiveData = MutableLiveData<WeatherLife>()
 
-    var sunLiveData = MutableLiveData<WeatherSun>()
-
     var dailyLiveData = MutableLiveData<Weather7Day>()
 
     var errorLiveData = MutableLiveData<String>()
 
     var refreshLiveData = MutableLiveData<Int>()
 
-    private val infoCache = HashMap<String, String>()
-
     private var onFinishedApi = 0
 
-    fun getCityWeather(locationCode: String) {
+    private var locationCode: String? = null
+
+    fun setLocation(locationCode: String) {
+        this.locationCode = locationCode
+    }
+
+    fun getCityWeather() {
         requestResult(
             apiBlock = {
-                infoCache["locationCode"] = locationCode
-                ApiRepository.api.weatherNow(locationCode)
+                ApiRepository.api.weatherNow(locationCode!!)
             },
             onSuccess = {
                 nowLiveData.value = it
@@ -45,15 +46,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 errorLiveData.value = it.errorMsg
             },
             onFinished = {
-                onFinishedApi++
-                refreshLiveData.value = onFinishedApi
+                optApiCount()
             })
     }
 
-    fun get24HourWeather(locationCode: String) {
+    fun get24HourWeather() {
         requestResult(
             apiBlock = {
-                ApiRepository.api.weather24Hour(locationCode)
+                ApiRepository.api.weather24Hour(locationCode!!)
             },
             onSuccess = {
                 hour24LiveData.value = it
@@ -62,15 +62,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 errorLiveData.value = it.errorMsg
             },
             onFinished = {
-                onFinishedApi++
-                refreshLiveData.value = onFinishedApi
+                optApiCount()
             })
     }
 
-    fun get7DayWeather(locationCode: String) {
+    fun get7DayWeather() {
         requestResult(
             apiBlock = {
-                ApiRepository.api.weather7Day(locationCode)
+                ApiRepository.api.weather7Day(locationCode!!)
             },
             onSuccess = {
                 dailyLiveData.value = it
@@ -79,15 +78,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 errorLiveData.value = it.errorMsg
             },
             onFinished = {
-                onFinishedApi++
-                refreshLiveData.value = onFinishedApi
+                optApiCount()
             })
     }
 
-    fun getAirWeather(locationCode: String) {
+    fun getAirWeather() {
         requestResult(
             apiBlock = {
-                ApiRepository.api.weatherAir(locationCode)
+                ApiRepository.api.weatherAir(locationCode!!)
             },
             onSuccess = {
                 airLiveData.value = it
@@ -96,16 +94,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 errorLiveData.value = it.errorMsg
             },
             onFinished = {
-                onFinishedApi++
-                refreshLiveData.value = onFinishedApi
+                optApiCount()
             })
     }
 
-    fun getLifeWeather(locationCode: String, type: String) {
+    fun getLifeWeather() {
         requestResult(
             apiBlock = {
-                infoCache["indicesType"] = locationCode
-                ApiRepository.api.weatherIndices(locationCode, type)
+                ApiRepository.api.weatherIndices(locationCode!!, "1,2,3,5,9,11,16")
             },
             onSuccess = {
                 lifeLiveData.value = it
@@ -114,41 +110,24 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 errorLiveData.value = it.errorMsg
             },
             onFinished = {
-                onFinishedApi++
-                refreshLiveData.value = onFinishedApi
+                optApiCount()
             })
     }
 
-    fun getSunWeather(locationCode: String, date: String) {
-        requestResult(
-            apiBlock = {
-                infoCache["sunData"] = locationCode
-                ApiRepository.api.weatherSun(locationCode, date)
-            },
-            onSuccess = {
-                sunLiveData.value = it
-            },
-            onError = {
-                errorLiveData.value = it.errorMsg
-            },
-            onFinished = {
-                onFinishedApi++
-                refreshLiveData.value = onFinishedApi
-            })
+    private fun optApiCount() {
+        onFinishedApi++
+        if (onFinishedApi == 5) {
+            refreshLiveData.value = onFinishedApi
+            onFinishedApi = 0
+        }
     }
 
     fun refreshWeather() {
-        val locationCode = infoCache["locationCode"]
-        val indicesType = infoCache["indicesType"]
-        val sunData = infoCache["sunData"]
-        if (locationCode != null) {
-            getCityWeather(locationCode)
-            get24HourWeather(locationCode)
-            get7DayWeather(locationCode)
-            getAirWeather(locationCode)
-            getLifeWeather(locationCode, indicesType!!)
-            //  getSunWeather(locationCode, sunData!!)
-        }
+        getCityWeather()
+        get24HourWeather()
+        get7DayWeather()
+        getAirWeather()
+        getLifeWeather()
     }
 
     fun loadSnapshot(locationCode: String) {

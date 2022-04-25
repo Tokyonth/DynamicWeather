@@ -47,13 +47,4 @@ interface ApiInterface {
         @Query("type") type: String
     ): WeatherLife
 
-    /**
-     * 日落日出
-     */
-    @GET("astronomy/sun")
-    suspend fun weatherSun(
-        @Query("location") location: String,
-        @Query("date") date: String
-    ): WeatherSun
-
 }

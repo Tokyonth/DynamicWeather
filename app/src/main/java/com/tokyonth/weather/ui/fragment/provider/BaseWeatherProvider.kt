@@ -4,11 +4,11 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseWeatherProvider<T, B : ViewBinding> {
 
-    abstract fun fillView()
-
     private var data: T? = null
 
     protected lateinit var binding: B
+
+    protected abstract fun fillView()
 
     fun attach(
         data: T,
@@ -19,7 +19,7 @@ abstract class BaseWeatherProvider<T, B : ViewBinding> {
         fillView()
     }
 
-    fun getData(): T {
+    protected fun getData(): T {
         if (data == null) {
             throw IllegalStateException("data is null!")
         }

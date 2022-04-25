@@ -1,6 +1,7 @@
 package com.tokyonth.weather.data
 
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 
 import java.util.*
@@ -46,14 +47,14 @@ object WeatherHelper {
         }
     }
 
-    fun getAirQualityColor(airQuality: String): Int {
-        return when (airQuality) {
-          /*  string(R.string.air_quality_good) -> color(R.color.airQualityGood)
-            string(R.string.air_quality_medium) -> color(R.color.airQualityMedium)
-            string(R.string.air_quality_lightly_pollute) -> color(R.color.airQualityLightlyPollute)
-            string(R.string.air_quality_medium_pollute) -> color(R.color.airQualityMediumPollute)
-            string(R.string.air_quality_heavy_pollute) -> color(R.color.airQualityHeavyPollute)
-            string(R.string.air_quality_deep_pollute) -> color(R.color.airQualityDeepPollute)*/
+    fun getAirQualityColor(airLevel: Int): Int {
+        return when (airLevel) {
+            1 -> Color.parseColor("#4CAF50")
+            2 -> Color.parseColor("#FFC107")
+            3 -> Color.parseColor("#FF5722")
+            4 -> Color.parseColor("#F44336")
+            5 -> Color.parseColor("#9C27B0")
+            6 -> Color.parseColor("#880E4F")
             else -> 0
         }
     }
@@ -105,27 +106,27 @@ object WeatherHelper {
 
     fun getIconResId(weather: String): Int {
         return when (weather) {
-           /* string(R.string.weather_sun) -> R.drawable.weather_sunny
-            string(R.string.weather_overcast) -> R.drawable.weather_overcast
-            string(R.string.weather_snow) -> R.drawable.weather_heavy_rain
-            string(R.string.weather_rain) -> R.drawable.weather_light_snow
-            string(R.string.weather_cloudy) -> R.drawable.weather_cloudy
-            string(R.string.weather_thunder) -> R.drawable.weather_thunder
-            string(R.string.weather_light_rain) -> R.drawable.weather_light_rain
-            string(R.string.weather_shower) -> R.drawable.weather_rain_shower*/
+            /* string(R.string.weather_sun) -> R.drawable.weather_sunny
+             string(R.string.weather_overcast) -> R.drawable.weather_overcast
+             string(R.string.weather_snow) -> R.drawable.weather_heavy_rain
+             string(R.string.weather_rain) -> R.drawable.weather_light_snow
+             string(R.string.weather_cloudy) -> R.drawable.weather_cloudy
+             string(R.string.weather_thunder) -> R.drawable.weather_thunder
+             string(R.string.weather_light_rain) -> R.drawable.weather_light_rain
+             string(R.string.weather_shower) -> R.drawable.weather_rain_shower*/
             else -> 0
         }
     }
 
     fun getLifeIndexIcon(indexName: String): Int {
         return when (indexName) {
-           /* string(R.string.index_air_conditioning) -> R.drawable.index_air_conditioning
-            string(R.string.index_sport) -> R.drawable.index_sport
-            string(R.string.index_uv) -> R.drawable.index_uv
-            string(R.string.index_virus) -> R.drawable.index_virus
-            string(R.string.index_washing) -> R.drawable.index_washing
-            string(R.string.index_air_pollution) -> R.drawable.index_air_pollution
-            string(R.string.index_clothes) -> R.drawable.index_clothes*/
+            /* string(R.string.index_air_conditioning) -> R.drawable.index_air_conditioning
+             string(R.string.index_sport) -> R.drawable.index_sport
+             string(R.string.index_uv) -> R.drawable.index_uv
+             string(R.string.index_virus) -> R.drawable.index_virus
+             string(R.string.index_washing) -> R.drawable.index_washing
+             string(R.string.index_air_pollution) -> R.drawable.index_air_pollution
+             string(R.string.index_clothes) -> R.drawable.index_clothes*/
             else -> 0
         }
     }

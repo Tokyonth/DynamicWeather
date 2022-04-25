@@ -67,13 +67,13 @@
             android:layout_below="@id/weather_airquality_image_iv"
             android:layout_centerHorizontal="true"
             app:semicircleBackgroundLineColor="@android:color/white"
-            app:semicircleFrontLineColor="@color/purple_500"
+            app:semicircleFrontLineColor="@color/blue"
             app:semicircleLineSize="8dp"
             app:semicircleSize="110dp"
             app:semicircleSubtitleColor="@android:color/white"
             app:semicircleSubtitleSize="12sp"
             app:semicircleSubtitleText="AQI"
-            app:semicircleTitleColor="@color/purple_500"
+            app:semicircleTitleColor="@color/blue"
             app:semicircleTitleSize="14sp"
             app:semicircleTitleText="指数" />
 

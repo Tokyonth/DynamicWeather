@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
 import android.content.Intent
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -68,6 +69,7 @@ class MainActivity : BaseActivity() {
         }
 
         model.cityChangeLiveData.observe(this) {
+            Log.e("打印-->", it)
             binding.tvCityName.text = it
         }
 
