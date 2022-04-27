@@ -9,6 +9,8 @@ import android.view.View
 import com.tokyonth.weather.R
 import com.tokyonth.weather.databinding.ItemCityManageBinding
 import com.tokyonth.weather.data.entity.SavedLocationEntity
+import com.tokyonth.weather.utils.AssetsZipUtils
+import com.tokyonth.weather.utils.ktx.loadSvg
 import com.tokyonth.weather.utils.ktx.string
 
 class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewHolder>() {
@@ -71,12 +73,15 @@ class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewH
         }
 
         private fun setWeatherInfo(savedLocationEntity: SavedLocationEntity) {
-            if (savedLocationEntity.locationName.isEmpty()) {
-                vb.tvCityItemWeather.text = "0"
+            if (savedLocationEntity.img.isNullOrEmpty()) {
+                vb.tvCityItemTemp.text = string(R.string.celsius, "-")
                 vb.tvAirAndTemp.text = "N/A"
                 vb.ivCityItemWeather.setImageResource(R.drawable.ic_nothing)
             } else {
-                vb.tvCityItemWeather.text = string(R.string.celsius, savedLocationEntity.temp)
+                vb.tvCityItemTemp.text = string(R.string.celsius, savedLocationEntity.temp)
+                vb.tvAirAndTemp.text = savedLocationEntity.weather
+                vb.ivCityItemWeather.loadSvg(AssetsZipUtils.getFilePathByName(savedLocationEntity.img!!))
+
            //     val weatherImagePath = WeatherHelper.getWeatherImagePath(savedCityEntity.img!!)
 //                vb.root.background = WeatherHelper.getWeatherBackground(savedCityEntity.img!!)
              //   vb.ivCityItemWeather.setImageResource(weatherImagePath)

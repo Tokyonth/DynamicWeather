@@ -1,14 +1,10 @@
 package com.tokyonth.weather.ui.activity
 
-import android.app.Activity
 import android.view.Menu
 import android.view.MenuItem
 import android.content.Intent
-import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.tokyonth.weather.Constants
@@ -18,8 +14,12 @@ import com.tokyonth.weather.ui.adapter.WeatherPagerAdapter
 import com.tokyonth.weather.data.WeatherHelper
 import com.tokyonth.weather.utils.ktx.lazyBind
 import com.tokyonth.weather.R
+import com.tokyonth.weather.data.event.CityChangeEvent
+import com.tokyonth.weather.data.event.CitySelectEvent
 import com.tokyonth.weather.ui.viewmodel.MainViewModel
 import com.tokyonth.weather.utils.SPUtils.getSP
+import com.tokyonth.weather.utils.event.LifecycleEventBus
+import com.tokyonth.weather.utils.event.ThreadMode
 import com.tokyonth.weather.utils.ktx.string
 
 class MainActivity : BaseActivity() {
@@ -28,7 +28,7 @@ class MainActivity : BaseActivity() {
 
     private val model: MainViewModel by viewModels()
 
-    private var cityLauncher: ActivityResultLauncher<Intent>? = null
+    private var pagerAdapter = WeatherPagerAdapter(this)
 
     override fun setVbRoot() = binding
 
@@ -44,15 +44,6 @@ class MainActivity : BaseActivity() {
         }
 
         model.getAllCityCount()
-
-        cityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val position = it.data?.getIntExtra(Constants.CITY_SELECT_RESULT, -1)
-                if (position != null && position != -1) {
-                    binding.vpWeatherPage.currentItem = position
-                }
-            }
-        }
     }
 
     override fun initView() {
@@ -60,16 +51,18 @@ class MainActivity : BaseActivity() {
             ContextCompat.getDrawable(this, R.drawable.ic_more)
         supportActionBar?.setHomeButtonEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        binding.vpWeatherPage.adapter = pagerAdapter
+        binding.indicatorPager.attachToViewPager2(binding.vpWeatherPage)
     }
 
     override fun initObserve() {
         model.savedAllCityLiveData.observe(this) {
-            binding.vpWeatherPage.adapter = WeatherPagerAdapter(it, this@MainActivity)
-            binding.indicatorPager.attachToViewPager2(binding.vpWeatherPage)
+            pagerAdapter.setData(it)
+            binding.indicatorPager.setCount(it.size)
         }
 
         model.cityChangeLiveData.observe(this) {
-            Log.e("打印-->", it)
             binding.tvCityName.text = it
         }
 
@@ -77,6 +70,14 @@ class MainActivity : BaseActivity() {
             val drawType = WeatherHelper.getDrawerType(it)
             binding.weatherView.setDrawerType(drawType)
         }
+
+        LifecycleEventBus.observe(this, CityChangeEvent::class.java, {
+            model.getAllCityCount()
+        }, ThreadMode.MAIN)
+
+        LifecycleEventBus.observe(this, CitySelectEvent::class.java, {
+            binding.vpWeatherPage.currentItem = it.position
+        }, ThreadMode.MAIN)
     }
 
     private fun cannotFoundDefaultCity() {
@@ -106,7 +107,7 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_city -> cityLauncher?.launch(
+            R.id.action_city -> startActivity(
                 Intent(
                     this@MainActivity,
                     CityActivity::class.java
@@ -141,7 +142,6 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding.weatherView.onDestroy()
-        cityLauncher?.unregister()
     }
 
 }

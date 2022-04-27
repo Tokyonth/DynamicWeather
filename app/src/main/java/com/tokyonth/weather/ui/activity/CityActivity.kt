@@ -1,13 +1,10 @@
 package com.tokyonth.weather.ui.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 
-import com.tokyonth.weather.Constants
 import com.tokyonth.weather.databinding.ActivityCityBinding
 import com.tokyonth.weather.base.BaseActivity
 import com.tokyonth.weather.ui.adapter.CityManageAdapter
@@ -16,6 +13,9 @@ import com.tokyonth.weather.utils.ktx.lazyBind
 import com.tokyonth.weather.utils.ktx.snack
 import com.tokyonth.weather.ui.viewmodel.CityViewModel
 import com.tokyonth.weather.R
+import com.tokyonth.weather.data.event.CityChangeEvent
+import com.tokyonth.weather.data.event.CitySelectEvent
+import com.tokyonth.weather.utils.event.LifecycleEventBus
 import com.tokyonth.weather.utils.ktx.string
 
 class CityActivity : BaseActivity() {
@@ -42,12 +42,8 @@ class CityActivity : BaseActivity() {
         }
         cityAdapter.setOnItemClickListener(object : CityManageAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                setResult(
-                    Activity.RESULT_OK, Intent().putExtra(
-                        Constants.CITY_SELECT_RESULT,
-                        position
-                    )
-                )
+
+                LifecycleEventBus.sendEvent(CitySelectEvent(position))
                 finish()
             }
 
@@ -67,10 +63,14 @@ class CityActivity : BaseActivity() {
         }
 
         model.savedCityLiveData.observe(this) {
-            cityAdapter.getData().add(it)
-            cityAdapter.notifyItemChanged(cityAdapter.getData().size)
+            if (it == null) {
+                snack("已经存在!")
+            } else {
+                cityAdapter.getData().add(it)
+                cityAdapter.notifyItemChanged(cityAdapter.getData().size)
 
-            model.getManagerCityWeather(cityAdapter.getData().size - 1, it.locationId)
+                model.getManagerCityWeather(cityAdapter.getData().size - 1, it.locationId)
+            }
         }
 
         model.deleteCityLiveData.observe(this) {

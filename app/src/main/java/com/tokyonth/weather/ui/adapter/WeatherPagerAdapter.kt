@@ -11,15 +11,18 @@ import com.tokyonth.weather.ui.fragment.WeatherFragment
 
 import java.util.ArrayList
 
-class WeatherPagerAdapter(
-    private val locationList: List<SavedLocationEntity>,
-    fragmentActivity: FragmentActivity
-) : FragmentStateAdapter(fragmentActivity) {
+class WeatherPagerAdapter(fragmentActivity: FragmentActivity) :
+    FragmentStateAdapter(fragmentActivity) {
 
     private val fragmentList: MutableList<Fragment> = ArrayList()
 
-    init {
-        locationList.forEach { _ ->
+    private var locationList: MutableList<SavedLocationEntity> = ArrayList()
+
+    fun setData(dataList: List<SavedLocationEntity>) {
+        locationList.clear()
+        fragmentList.clear()
+        dataList.forEach {
+            locationList.add(it)
             fragmentList.add(WeatherFragment())
         }
     }

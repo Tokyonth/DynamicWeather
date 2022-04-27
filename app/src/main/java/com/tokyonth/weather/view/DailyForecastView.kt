@@ -46,11 +46,11 @@ class DailyForecastView : View {
     inner class Data {
         var minOffsetPercent = 0f
         var maxOffsetPercent = 0f // 差值%
-        var tmp_max = 0
-        var tmp_min = 0
+        var tempMax = 0
+        var tempMin = 0
         var date: String? = null
-        var wind_sc: String? = null
-        var cond_txt_d: String? = null
+        var windScale: String? = null
+        var condDay: String? = null
     }
 
     private fun initData() {
@@ -110,13 +110,13 @@ class DailyForecastView : View {
             yMax[i] = dCenterY - d.maxOffsetPercent * dH
             yMin[i] = dCenterY - d.minOffsetPercent * dH
             canvas.drawText(
-                d.tmp_max.toString() + "°",
+                d.tempMax.toString() + "°",
                 x[i],
                 yMax[i] - mTextSize + textOffset,
                 paint
             )
             canvas.drawText(
-                d.tmp_min.toString() + "°",
+                d.tempMin.toString() + "°",
                 x[i],
                 yMin[i] + mTextSize + textOffset,
                 paint
@@ -127,8 +127,8 @@ class DailyForecastView : View {
                 mTextSize * 13.5f + textOffset,
                 paint
             )
-            canvas.drawText(d.cond_txt_d + "", x[i], mTextSize * 15f + textOffset, paint) //“晴"
-            canvas.drawText(d.wind_sc!!, x[i], mTextSize * 16.5f + textOffset, paint) //微风
+            canvas.drawText(d.condDay + "", x[i], mTextSize * 15f + textOffset, paint) //“晴"
+            canvas.drawText(d.windScale!!, x[i], mTextSize * 16.5f + textOffset, paint) //微风
         }
     }
 
@@ -205,19 +205,19 @@ class DailyForecastView : View {
                 allMin = min
             }
             val data = Data().apply {
-                tmp_max = max
-                tmp_min = min
+                tempMax = max
+                tempMin = min
                 date = DateUtils.format(forecastList[i].fxDate)
-                wind_sc = forecastList[i].windDirDay
-                cond_txt_d = forecastList[i].textDay
+                windScale = forecastList[i].windDirDay
+                condDay = forecastList[i].textDay
             }
             simpleDataArray.add(data)
         }
         val allDistance = abs(allMax - allMin).toFloat()
         val averageDistance = (allMax + allMin) / 2f
         for (d in simpleDataArray) {
-            d.maxOffsetPercent = (d.tmp_max - averageDistance) / allDistance
-            d.minOffsetPercent = (d.tmp_min - averageDistance) / allDistance
+            d.maxOffsetPercent = (d.tempMax - averageDistance) / allDistance
+            d.minOffsetPercent = (d.tempMin - averageDistance) / allDistance
         }
 
         percent = 0f
