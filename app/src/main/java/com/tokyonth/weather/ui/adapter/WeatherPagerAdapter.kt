@@ -18,20 +18,39 @@ class WeatherPagerAdapter(fragmentActivity: FragmentActivity) :
 
     private var locationList: MutableList<SavedLocationEntity> = ArrayList()
 
+    init {
+        locationList.add(
+            0, SavedLocationEntity(
+                0, "", "", ""
+            )
+        )
+        fragmentList.add(0, WeatherFragment())
+    }
+
     fun setData(dataList: List<SavedLocationEntity>) {
-        locationList.clear()
-        fragmentList.clear()
         dataList.forEach {
             locationList.add(it)
             fragmentList.add(WeatherFragment())
         }
     }
 
+    fun addData(savedLocationEntity: SavedLocationEntity) {
+        locationList.add(savedLocationEntity)
+        fragmentList.add(WeatherFragment())
+    }
+
+    fun removeData(position: Int) {
+        locationList.removeAt(position)
+        fragmentList.removeAt(position)
+    }
+
     override fun createFragment(position: Int): Fragment {
+        val isDefault = position == 0
         return fragmentList[position].apply {
             arguments = bundleOf(
-                Pair(Constants.INTENT_CITY_CODE, locationList[position].locationId),
-                Pair(Constants.INTENT_CITY_NAME, locationList[position].locationName)
+                Pair(Constants.INTENT_IS_DEFAULT_LOCATION, isDefault),
+                Pair(Constants.INTENT_LOCATION_CODE, locationList[position].locationId),
+                Pair(Constants.INTENT_LOCATION_NAME, locationList[position].locationName)
             )
         }
     }

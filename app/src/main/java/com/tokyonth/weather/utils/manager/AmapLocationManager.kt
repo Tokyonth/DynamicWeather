@@ -1,5 +1,6 @@
 package com.tokyonth.weather.utils.manager
 
+import android.util.Log
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
@@ -19,7 +20,7 @@ class AmapLocationManager {
 
     private var locationClient: AMapLocationClient? = null
     private var locationOption: AMapLocationClientOption? = null
-//    private var locationObs: ((DefaultCityEntry?) -> Unit)? = null
+    private var locationObs: ((Pair<String, String>?) -> Unit)? = null
 
     init {
         locationClient = AMapLocationClient(App.context).apply {
@@ -29,10 +30,10 @@ class AmapLocationManager {
         }
     }
 
-/*    fun currentLocal(locationObs: (DefaultCityEntry?) -> Unit) {
+    fun currentLocal(locationObs: (Pair<String, String>?) -> Unit) {
         this.locationObs = locationObs
         startLocation()
-    }*/
+    }
 
     private val defaultOption: AMapLocationClientOption
         get() {
@@ -68,16 +69,14 @@ class AmapLocationManager {
                 val districtName = aMapLocation.district
                 val longitude = aMapLocation.longitude.toString()
                 val latitude = aMapLocation.latitude.toString()
-                // 区级定位
-/*                val defaultCity = DefaultCityEntry(
-                    districtName,
-                    cityName,
-                    longitude,
-                    latitude
-                )*/
-           //     locationObs?.invoke(defaultCity)
+
+                Log.e(
+                    "打印-->", "AD:${aMapLocation.adCode}," +
+                            "City:${aMapLocation.cityCode}"
+                )
+                locationObs?.invoke(Pair(aMapLocation.adCode, aMapLocation.district))
             } else {
-               // locationObs?.invoke(null)
+                locationObs?.invoke(null)
             }
             stopLocation()
         }

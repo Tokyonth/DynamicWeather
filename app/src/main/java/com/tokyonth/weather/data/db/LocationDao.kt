@@ -18,6 +18,9 @@ interface LocationDao {
     @Query("SELECT * FROM ${Constants.DB_LOCATION_INFO_TABLE} WHERE locationId =:mLocationId")
     suspend fun queryLocationById(mLocationId: String): LocationEntity?
 
+    @Query("SELECT * FROM ${Constants.DB_LOCATION_INFO_TABLE} WHERE adCode =:mAdCode")
+    suspend fun queryLocationByAdCode(mAdCode: String): LocationEntity?
+
     @Query("SELECT * FROM ${Constants.DB_SAVED_LOCATION_TABLE}")
     suspend fun queryAllSavedLocation(): List<SavedLocationEntity>
 

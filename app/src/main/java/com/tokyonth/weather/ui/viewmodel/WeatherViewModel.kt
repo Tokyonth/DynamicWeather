@@ -2,13 +2,16 @@ package com.tokyonth.weather.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 
 import com.tokyonth.weather.App
 import com.tokyonth.weather.base.BaseViewModel
+import com.tokyonth.weather.data.db.DbManager
 import com.tokyonth.weather.data.hf.*
 import com.tokyonth.weather.network.ApiRepository
 import com.tokyonth.weather.network.requestResult
 import com.tokyonth.weather.utils.FileUtils
+import kotlinx.coroutines.launch
 
 class WeatherViewModel(application: Application) : BaseViewModel(application) {
 
@@ -22,8 +25,6 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
 
     var dailyLiveData = MutableLiveData<Weather7Day>()
 
-    var errorLiveData = MutableLiveData<String>()
-
     var refreshLiveData = MutableLiveData<Int>()
 
     private var onFinishedApi = 0
@@ -34,7 +35,7 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
         this.locationCode = locationCode
     }
 
-    fun getCityWeather() {
+    private fun getNowWeather() {
         requestResult(
             apiBlock = {
                 ApiRepository.api.weatherNow(locationCode!!)
@@ -43,14 +44,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 nowLiveData.value = it
             },
             onError = {
-                errorLiveData.value = it.errorMsg
+
             },
             onFinished = {
                 optApiCount()
             })
     }
 
-    fun get24HourWeather() {
+    private fun get24HourWeather() {
         requestResult(
             apiBlock = {
                 ApiRepository.api.weather24Hour(locationCode!!)
@@ -59,14 +60,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 hour24LiveData.value = it
             },
             onError = {
-                errorLiveData.value = it.errorMsg
+
             },
             onFinished = {
                 optApiCount()
             })
     }
 
-    fun get7DayWeather() {
+    private fun get7DayWeather() {
         requestResult(
             apiBlock = {
                 ApiRepository.api.weather7Day(locationCode!!)
@@ -75,14 +76,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 dailyLiveData.value = it
             },
             onError = {
-                errorLiveData.value = it.errorMsg
+
             },
             onFinished = {
                 optApiCount()
             })
     }
 
-    fun getAirWeather() {
+    private fun getAirWeather() {
         requestResult(
             apiBlock = {
                 ApiRepository.api.weatherAir(locationCode!!)
@@ -91,14 +92,14 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 airLiveData.value = it
             },
             onError = {
-                errorLiveData.value = it.errorMsg
+
             },
             onFinished = {
                 optApiCount()
             })
     }
 
-    fun getLifeWeather() {
+    private fun getLifeWeather() {
         requestResult(
             apiBlock = {
                 ApiRepository.api.weatherIndices(locationCode!!, "1,2,3,5,9,11,16")
@@ -107,11 +108,19 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
                 lifeLiveData.value = it
             },
             onError = {
-                errorLiveData.value = it.errorMsg
+
             },
             onFinished = {
                 optApiCount()
             })
+    }
+
+    fun pickLocation(adCode: String) {
+        viewModelScope.launch {
+            val location = DbManager.db.getLocationDao().queryLocationByAdCode(adCode)
+            locationCode = location!!.locationId
+            refreshWeather()
+        }
     }
 
     private fun optApiCount() {
@@ -123,7 +132,7 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun refreshWeather() {
-        getCityWeather()
+        getNowWeather()
         get24HourWeather()
         get7DayWeather()
         getAirWeather()

@@ -1,15 +1,21 @@
 package com.tokyonth.weather.ui.fragment
 
+import android.content.Intent
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.tokyonth.weather.Constants
+import com.tokyonth.weather.R
 import com.tokyonth.weather.base.BaseFragment
 import com.tokyonth.weather.databinding.FragmentWeatherBinding
+import com.tokyonth.weather.ui.activity.CityActivity
 import com.tokyonth.weather.ui.viewmodel.WeatherViewModel
 import com.tokyonth.weather.ui.fragment.provider.*
 import com.tokyonth.weather.ui.viewmodel.MainViewModel
 import com.tokyonth.weather.utils.ktx.lazyBind
+import com.tokyonth.weather.utils.ktx.string
+import com.tokyonth.weather.utils.manager.AmapLocationManager
 
 class WeatherFragment : BaseFragment() {
 
@@ -26,9 +32,24 @@ class WeatherFragment : BaseFragment() {
     override fun setVbRoot() = binding
 
     override fun initData() {
-        val cityCode = arguments?.getString(Constants.INTENT_CITY_CODE)
-        model.setLocation(cityCode!!)
-        cityName = arguments?.getString(Constants.INTENT_CITY_NAME)
+        val locationCode = arguments?.getString(Constants.INTENT_LOCATION_CODE)
+        val isDefaultLocation = arguments?.getBoolean(Constants.INTENT_IS_DEFAULT_LOCATION, false)
+        cityName = arguments?.getString(Constants.INTENT_LOCATION_NAME)
+
+        if (isDefaultLocation == true) {
+            AmapLocationManager.INSTANCE.currentLocal {
+                if (it != null) {
+                    model.pickLocation(it.first)
+                    cityName = it.second
+                    dyModel.cityChangeLiveData.value = cityName
+                } else {
+                    cannotFoundDefaultCity()
+                }
+                AmapLocationManager.INSTANCE.stop()
+            }
+        } else {
+            model.setLocation(locationCode!!)
+        }
     }
 
     override fun initView() {
@@ -41,15 +62,12 @@ class WeatherFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         if (!isLoaded) {
-            model.getCityWeather()
-            model.get24HourWeather()
-            model.get7DayWeather()
-            model.getAirWeather()
-            model.getLifeWeather()
+            model.refreshWeather()
             isLoaded = true
         }
-
-        dyModel.cityChangeLiveData.value = cityName
+        if (!cityName.isNullOrEmpty()) {
+            dyModel.cityChangeLiveData.value = cityName
+        }
     }
 
     override fun initObserve() {
@@ -77,6 +95,26 @@ class WeatherFragment : BaseFragment() {
             binding.refreshWeatherView.isRefreshing = false
             //snack("刷新完成!")
         }
+    }
+
+    private fun cannotFoundDefaultCity() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(string(R.string.text_tips))
+            .setMessage(string(R.string.text_failed_location))
+            .setNegativeButton(
+                string(R.string.text_manual_selection)
+            ) { _, _ ->
+                startActivity(
+                    Intent(
+                        requireContext(),
+                        CityActivity::class.java
+                    )
+                )
+            }
+            .setPositiveButton(string(R.string.text_cancel)) { _, _ -> requireActivity().finish() }
+            .setCancelable(false)
+            .create()
+            .show()
     }
 
 }

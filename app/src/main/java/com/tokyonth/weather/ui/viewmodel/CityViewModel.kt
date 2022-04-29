@@ -49,13 +49,14 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
             } else {
                 position
             }
-            LifecycleEventBus.sendEvent(CityChangeEvent())
+            LifecycleEventBus.sendEvent(CityChangeEvent(position, null))
         }
     }
 
     fun saveCity(locationEntity: LocationEntity) {
         viewModelScope.launch {
-            val isExists = DbManager.db.getLocationDao().querySavedLocationById(locationEntity.locationId)
+            val isExists =
+                DbManager.db.getLocationDao().querySavedLocationById(locationEntity.locationId)
             val result = if (isExists == null) {
                 val savedCityEntity = fillSavedCity(locationEntity)
                 val id = DbManager.db.getLocationDao().insertSavedLocation(savedCityEntity)
@@ -66,17 +67,15 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
                 null
             }
             savedCityLiveData.value = result
-            LifecycleEventBus.sendEvent(CityChangeEvent())
+            LifecycleEventBus.sendEvent(CityChangeEvent(-1, result))
         }
     }
 
     private fun fillSavedCity(locationEntity: LocationEntity): SavedLocationEntity {
         return SavedLocationEntity(
-            0,
+            0, "",
             locationEntity.locationId,
             locationEntity.locationNameZH,
-            null, null,
-            null, null,
         )
     }
 

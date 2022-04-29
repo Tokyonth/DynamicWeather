@@ -8,10 +8,11 @@ import com.tokyonth.weather.Constants
 class SavedLocationEntity(
     @PrimaryKey(autoGenerate = true)
     var autoId: Long,
-    val locationId: String,
+    var adCode: String,
+    var locationId: String,
     var locationName: String,
-    var weather: String?,
-    var temp: String?,
-    var img: String?,
-    var isInTime: Int?
+    var weather: String? = null,
+    var temp: String? = null,
+    var img: String? = null,
+    var isInTime: Int? = null
 )

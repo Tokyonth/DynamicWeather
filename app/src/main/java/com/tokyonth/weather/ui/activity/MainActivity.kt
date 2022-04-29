@@ -5,7 +5,6 @@ import android.view.MenuItem
 import android.content.Intent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.tokyonth.weather.Constants
 import com.tokyonth.weather.base.BaseActivity
@@ -20,7 +19,6 @@ import com.tokyonth.weather.ui.viewmodel.MainViewModel
 import com.tokyonth.weather.utils.SPUtils.getSP
 import com.tokyonth.weather.utils.event.LifecycleEventBus
 import com.tokyonth.weather.utils.event.ThreadMode
-import com.tokyonth.weather.utils.ktx.string
 
 class MainActivity : BaseActivity() {
 
@@ -28,7 +26,7 @@ class MainActivity : BaseActivity() {
 
     private val model: MainViewModel by viewModels()
 
-    private var pagerAdapter = WeatherPagerAdapter(this)
+    private var pagerAdapter: WeatherPagerAdapter? = null
 
     override fun setVbRoot() = binding
 
@@ -43,6 +41,7 @@ class MainActivity : BaseActivity() {
             return
         }
 
+        pagerAdapter = WeatherPagerAdapter(this)
         model.getAllCityCount()
     }
 
@@ -58,8 +57,8 @@ class MainActivity : BaseActivity() {
 
     override fun initObserve() {
         model.savedAllCityLiveData.observe(this) {
-            pagerAdapter.setData(it)
-            binding.indicatorPager.setCount(it.size)
+            pagerAdapter?.setData(it)
+            binding.indicatorPager.setCount(pagerAdapter!!.itemCount)
         }
 
         model.cityChangeLiveData.observe(this) {
@@ -71,33 +70,21 @@ class MainActivity : BaseActivity() {
             binding.weatherView.setDrawerType(drawType)
         }
 
-        LifecycleEventBus.observe(this, CityChangeEvent::class.java, {
-            model.getAllCityCount()
-        }, ThreadMode.MAIN)
-
-        LifecycleEventBus.observe(this, CitySelectEvent::class.java, {
-            binding.vpWeatherPage.currentItem = it.position
-        }, ThreadMode.MAIN)
-    }
-
-    private fun cannotFoundDefaultCity() {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(string(R.string.text_tips))
-            .setMessage(string(R.string.text_failed_location))
-            .setNegativeButton(
-                string(R.string.text_manual_selection)
-            ) { _, _ ->
-                startActivity(
-                    Intent(
-                        this@MainActivity,
-                        CityActivity::class.java
-                    )
-                )
+        LifecycleEventBus.setThreadMode(ThreadMode.MAIN)
+            .observe(this, CityChangeEvent::class.java) {
+                // model.getAllCityCount()
+                if (it.position != -1) {
+                    pagerAdapter?.removeData(it.position)
+                } else {
+                    pagerAdapter?.addData(it.savedLocationEntity!!)
+                }
+                binding.indicatorPager.setCount(pagerAdapter!!.itemCount)
             }
-            .setPositiveButton(string(R.string.text_cancel)) { _, _ -> finish() }
-            .setCancelable(false)
-            .create()
-            .show()
+
+        LifecycleEventBus.setThreadMode(ThreadMode.MAIN)
+            .observe(this, CitySelectEvent::class.java) {
+                binding.vpWeatherPage.currentItem = it.position
+            }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

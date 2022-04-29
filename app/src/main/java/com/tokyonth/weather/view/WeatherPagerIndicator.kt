@@ -12,14 +12,14 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 class WeatherPagerIndicator : View {
 
     // 指示器之间的间距
-    private var mIndicatorItemDistance = 6F
+    private var mIndicatorItemDistance = 20F
 
     //选中与为选中的颜色
     private var mColorSelected = Color.WHITE
     private var mColorUnSelected = Color.parseColor("#33FFFFFF")
 
     // 圆点半径大小
-    private var circleCircleRadius = 2F
+    private var circleCircleRadius = 8F
 
     //指示器大小
     //  private var mIndicatorItemWidth = 0
@@ -76,7 +76,7 @@ class WeatherPagerIndicator : View {
     fun attachToViewPager2(vp2: ViewPager2) {
         vp2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                mCurrentSelectedPosition = vp2.currentItem
+                mCurrentSelectedPosition = position
                 postInvalidate()
             }
         })

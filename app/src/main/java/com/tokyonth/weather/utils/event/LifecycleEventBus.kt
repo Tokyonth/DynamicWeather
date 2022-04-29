@@ -12,9 +12,19 @@ object LifecycleEventBus {
     private val observerMap =
         mutableMapOf<Class<*>, ConcurrentHashMap<EventObserver<*>, ObserverWrapper>>()
 
+    private var threadMode = ThreadMode.ORIGIN
+
     /** For unit test primarily. */
     fun clearAll() {
         observerMap.clear()
+    }
+
+    /**
+     * @param threadMode: 指定 observer 运行在那个线程，详见 [ThreadMode], 默认为 [ThreadMode.ORIGIN]
+     */
+    fun setThreadMode(threadMode: ThreadMode): LifecycleEventBus {
+        this.threadMode = threadMode
+        return this
     }
 
     /**
@@ -40,13 +50,11 @@ object LifecycleEventBus {
      * @param owner: 生命周期 owner，可以是 Activity/Fragment
      * @param eventType: 事件类型，只有发送相同类型的事件才能够被接收到
      * @param observer: 监听者，在这里处理接收到事件的逻辑
-     * @param threadMode: 指定 observer 运行在那个线程，详见 [ThreadMode], 默认为 [ThreadMode.ORIGIN]
      */
     fun <T : EVENT> observe(
         owner: LifecycleOwner,
         eventType: Class<T>,
         observer: EventObserver<T>,
-        threadMode: ThreadMode = ThreadMode.ORIGIN
     ) {
         ThreadManager.runOnMainThread {
             addObserver(eventType, LifecycleBoundObserver(owner, observer, threadMode))
@@ -58,14 +66,12 @@ object LifecycleEventBus {
      *
      * 使用该方法注册的 observer 将在整个应用进程期间存在，必要的时候需要手动调用 [removeObserver] 移除监听
      *
-     * @param threadMode: 指定 observer 运行在那个线程，详见 [ThreadMode], 默认为 [ThreadMode.ORIGIN]
      * @param eventType: 事件类型，只有发送相同类型的事件才能够被接收到
      * @param observer: 监听者，在这里处理接收到事件的逻辑
      */
     fun <T : EVENT> observeForever(
         eventType: Class<T>,
         observer: EventObserver<T>,
-        threadMode: ThreadMode = ThreadMode.ORIGIN
     ) {
         addObserver(eventType, ObserverWrapper(observer, threadMode))
     }
@@ -123,7 +129,10 @@ object LifecycleEventBus {
     /**
      * Observer 包装器，其子类 [LifecycleBoundObserver] 具备生命周期感知能力
      */
-    private open class ObserverWrapper(val observer: EventObserver<*>, val threadMode: ThreadMode) {
+    private open class ObserverWrapper(
+        val observer: EventObserver<*>,
+        val threadMode: ThreadMode
+    ) {
         open fun detachObserver() {}
     }
 

@@ -13,7 +13,7 @@ import com.tokyonth.weather.utils.ktx.lazyBind
 import com.tokyonth.weather.utils.ktx.snack
 import com.tokyonth.weather.ui.viewmodel.CityViewModel
 import com.tokyonth.weather.R
-import com.tokyonth.weather.data.event.CityChangeEvent
+import com.tokyonth.weather.data.entity.SavedLocationEntity
 import com.tokyonth.weather.data.event.CitySelectEvent
 import com.tokyonth.weather.utils.event.LifecycleEventBus
 import com.tokyonth.weather.utils.ktx.string
@@ -42,14 +42,13 @@ class CityActivity : BaseActivity() {
         }
         cityAdapter.setOnItemClickListener(object : CityManageAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-
                 LifecycleEventBus.sendEvent(CitySelectEvent(position))
                 finish()
             }
 
             override fun onLongClick(view: View, position: Int) {
                 if (position == 0) {
-                    //snack(getString(R.string.text_cannot_del_default_city))
+                    snack("默认城市不能删除!")
                 } else {
                     deleteCity(position)
                 }
@@ -59,6 +58,7 @@ class CityActivity : BaseActivity() {
 
     override fun initObserve() {
         model.allSavedCityLiveData.observe(this) {
+            it.add(0, SavedLocationEntity(0, "", "", "默认"))
             cityAdapter.setData(it)
         }
 
