@@ -75,27 +75,21 @@ class CitySheetDialog : BottomSheetDialogFragment() {
 
         behavior = BottomSheetBehavior.from(bottomSheet)
         behavior?.state = BottomSheetBehavior.STATE_EXPANDED
-        behavior?.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-        })
     }
 
     fun showDialog(fragmentActivity: FragmentActivity) {
         super.show(fragmentActivity.supportFragmentManager, "cityDialog")
-        /*location.currentLocal {
-            cityHotAdapter.setFirstCity(it!!.districtName)
-        }*/
+        location.currentLocal {
+            cityHotAdapter.setFirstCity(it!!.first)
+        }
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-      //  location.stop()
+        location.apply {
+            destroy()
+            stop()
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

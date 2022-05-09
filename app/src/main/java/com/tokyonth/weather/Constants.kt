@@ -2,7 +2,7 @@ package com.tokyonth.weather
 
 object Constants {
 
-    const val IS_PRINT_API_LOG = true
+    const val IS_PRINT_API_LOG = false
     const val SP_FILE_NAME = "config"
     const val IMPORT_DATA = "importData"
 

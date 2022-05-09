@@ -1,25 +1,20 @@
-package com.tokyonth.weather.view.sunrisesunset
+package com.tokyonth.weather.view
 
-import com.tokyonth.weather.utils.BitmapUtils.getBitmapFromDrawable
-import com.tokyonth.weather.view.sunrisesunset.SunriseSunsetView
 import android.text.TextPaint
-import com.tokyonth.weather.view.sunrisesunset.formatter.SunriseSunsetLabelFormatter
-import com.tokyonth.weather.view.sunrisesunset.formatter.SimpleSunriseSunsetLabelFormatter
-import kotlin.jvm.JvmOverloads
-import android.content.res.TypedArray
-import com.tokyonth.weather.R
-import android.view.View.MeasureSpec
-import com.tokyonth.weather.utils.BitmapUtils
-import android.graphics.Paint.FontMetricsInt
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import com.tokyonth.weather.view.sunrisesunset.model.Time
+
 import java.lang.RuntimeException
 import java.util.*
+
+import com.tokyonth.weather.utils.BitmapUtils.getBitmapFromDrawable
+import com.tokyonth.weather.R
+import kotlin.math.cos
+import kotlin.math.sin
 
 class SunriseSunsetView : View {
 
@@ -43,7 +38,7 @@ class SunriseSunsetView : View {
     private var mRatio = 0f
     private var mTrackColor = DEFAULT_TRACK_COLOR // 轨迹的颜色
     private var mTrackWidth = DEFAULT_TRACK_WIDTH_PX // 轨迹的宽度
-    var sunRadius = DEFAULT_SUN_RADIUS_PX // 太阳半径
+    private var sunRadius = DEFAULT_SUN_RADIUS_PX // 太阳半径
         .toFloat()
     private var mLabelTextSize = DEFAULT_LABEL_TEXT_SIZE // 标签文字大小
     private var mLabelTextColor = DEFAULT_LABEL_TEXT_COLOR // 标签颜色
@@ -61,26 +56,22 @@ class SunriseSunsetView : View {
     /**
      * 日出时间
      */
-    private var sunriseTime: Time? = null
+    private var sunriseTime: String? = null
 
     /**
      * 日落时间
      */
-    private var sunsetTime: Time? = null
+    private var sunsetTime: String? = null
 
-    fun setSsvTime(ssvTime: Pair<String, String>) {
-        val sunrise = ssvTime.first.split(":")
-        sunriseTime = Time(sunrise[0].toInt(), sunrise[1].toInt())
-        val sunset = ssvTime.second.split(":")
-        sunsetTime = Time(sunset[0].toInt(), sunset[1].toInt())
+    fun setSsvTime(sunrise: String, sunset: String) {
+        this.sunriseTime = sunrise
+        this.sunsetTime = sunset
     }
 
     /**
      * 绘图区域
      */
     private val mBoardRectF = RectF()
-
-    var labelFormatter: SunriseSunsetLabelFormatter = SimpleSunriseSunsetLabelFormatter()
 
     constructor(context: Context) : super(context) {
         initView()
@@ -218,7 +209,7 @@ class SunriseSunsetView : View {
             mBoardRectF.right,
             mBoardRectF.bottom + mBoardRectF.height()
         )
-        val curPointX = mBoardRectF.left + mTrackRadius - mTrackRadius * Math.cos(Math.PI * mRatio)
+        val curPointX = mBoardRectF.left + mTrackRadius - mTrackRadius * cos(Math.PI * mRatio)
             .toFloat()
         path.moveTo(0f, endY)
         path.arcTo(rectF, 180f, 180 * mRatio)
@@ -237,13 +228,15 @@ class SunriseSunsetView : View {
     // 绘制太阳
     private fun drawSun(canvas: Canvas) {
         canvas.save()
-        val curPointX = mBoardRectF.left + mTrackRadius - mTrackRadius * Math.cos(Math.PI * mRatio)
+        val curPointX = mBoardRectF.left + mTrackRadius - mTrackRadius * cos(Math.PI * mRatio)
             .toFloat()
-        val curPointY = mBoardRectF.bottom - mTrackRadius * Math.sin(Math.PI * mRatio)
+        val curPointY = mBoardRectF.bottom - mTrackRadius * sin(Math.PI * mRatio)
             .toFloat()
-        // canvas.drawCircle(curPointX, curPointY, mSunRadius, mSunPaint);
-        var bitmap: Bitmap? = getBitmapFromDrawable(R.drawable.ic_sun)
-        bitmap = Bitmap.createScaledBitmap(bitmap!!, 80, 80, true)
+
+        val bitmap: Bitmap = getBitmapFromDrawable(R.drawable.ic_sun).run {
+            Bitmap.createScaledBitmap(this, 80, 80, true)
+        }
+
         canvas.drawBitmap(bitmap, curPointX - 40, curPointY - 40, null)
         canvas.restore()
     }
@@ -256,13 +249,16 @@ class SunriseSunsetView : View {
         prepareLabelPaint()
         canvas.save()
         // 绘制日出时间
-        val sunriseStr = labelFormatter.formatSunriseLabel(sunriseTime!!)
+        val sunriseStr = sunriseTime!!
         mLabelPaint!!.textAlign = Paint.Align.LEFT
         val metricsInt = mLabelPaint!!.fontMetricsInt
         var baseLineX = mBoardRectF.left + sunRadius + mLabelHorizontalOffset
         val baseLineY = mBoardRectF.bottom - metricsInt.bottom - mLabelVerticalOffset
-        var bitmapSunrise = getBitmapFromDrawable(R.drawable.ic_sunrise)
-        bitmapSunrise = Bitmap.createScaledBitmap(bitmapSunrise, 40, 40, true)
+
+        val bitmapSunrise = getBitmapFromDrawable(R.drawable.ic_sunrise).run {
+            Bitmap.createScaledBitmap(this, 40, 40, true)
+        }
+
         canvas.drawBitmap(
             bitmapSunrise,
             baseLineX,
@@ -276,13 +272,16 @@ class SunriseSunsetView : View {
 
         // 绘制日落时间
         mLabelPaint!!.textAlign = Paint.Align.RIGHT
-        val sunsetStr = labelFormatter.formatSunsetLabel(sunsetTime!!)
+        val sunsetStr = sunsetTime!!
         baseLineX = mBoardRectF.right - sunRadius - mLabelHorizontalOffset
         val rect = Rect()
         mLabelPaint!!.getTextBounds(sunsetStr, 0, sunsetStr.length, rect)
         val sunsetStrWidth = rect.width().toFloat()
-        var bitmapSunset = getBitmapFromDrawable(R.drawable.ic_sunset)
-        bitmapSunset = Bitmap.createScaledBitmap(bitmapSunset, 40, 40, true)
+
+        val bitmapSunset = getBitmapFromDrawable(R.drawable.ic_sunset).run {
+            Bitmap.createScaledBitmap(this, 40, 40, true)
+        }
+
         canvas.drawBitmap(
             bitmapSunset,
             baseLineX - sunsetStrWidth - bitmapSunset.width * 2,
@@ -332,18 +331,38 @@ class SunriseSunsetView : View {
         if (sunriseTime == null || sunsetTime == null) {
             throw RuntimeException("You need to set both sunrise and sunset time before start animation")
         }
-        val sunrise = sunriseTime!!.transformToMinutes()
-        val sunset = sunsetTime!!.transformToMinutes()
+        val sunrise = timeString2Int(sunriseTime!!)
+        val sunset = timeString2Int(sunsetTime!!)
+
         val calendar = Calendar.getInstance(Locale.getDefault())
         val currentHour = calendar[Calendar.HOUR_OF_DAY]
         val currentMinute = calendar[Calendar.MINUTE]
-        val currentTime = currentHour * Time.MINUTES_PER_HOUR + currentMinute
+
+        val currentTime = currentHour * 60 + currentMinute
         var ratio = 1.0f * (currentTime - sunrise) / (sunset - sunrise)
-        ratio = if (ratio <= 0) 0F else if (ratio > 1.0f) 1F else ratio
-        val animator = ObjectAnimator.ofFloat(this, "ratio", 0f, ratio)
-        animator.duration = 1500L
-        animator.interpolator = LinearInterpolator()
-        animator.start()
+        ratio = when {
+            ratio <= 0 -> {
+                0F
+            }
+            ratio > 1.0f -> {
+                1F
+            }
+            else -> {
+                ratio
+            }
+        }
+
+        ObjectAnimator.ofFloat(this, "ratio", 0f, ratio).apply {
+            duration = 1500L
+            interpolator = LinearInterpolator()
+        }.start()
+    }
+
+    //String.format(Locale.getDefault(), "%02d:%02d", time.first, time.second)
+
+    private fun timeString2Int(time: String): Int {
+        val h = time.split(":")
+        return h[0].toInt() * 60 + h[1].toInt()
     }
 
 }

@@ -41,7 +41,7 @@ class WarningAdapter : RecyclerView.Adapter<WarningViewHolder>() {
         return warningList.size
     }
 
-    class WarningViewHolder(val binding: ItemWarningBinding) :
+    inner class WarningViewHolder(val binding: ItemWarningBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(itemExpand: (Int) -> Unit, data: WarningEntity) {

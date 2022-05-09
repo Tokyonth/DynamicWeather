@@ -78,7 +78,7 @@
                 android:id="@+id/pager_weather_aqi"
                 layout="@layout/pager_weather_aqi" />
 
-            <com.tokyonth.weather.view.sunrisesunset.SunriseSunsetView
+            <com.tokyonth.weather.view.SunriseSunsetView
                 android:id="@+id/ssv_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

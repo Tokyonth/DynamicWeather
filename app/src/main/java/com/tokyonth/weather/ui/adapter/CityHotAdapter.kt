@@ -63,7 +63,7 @@ class CityHotAdapter : RecyclerView.Adapter<CityHotAdapter.HotCityViewHolder>() 
         }
     }
 
-    class HotCityViewHolder(private val vb: ItemHotCityBinding) : RecyclerView.ViewHolder(vb.root) {
+    inner class HotCityViewHolder(private val vb: ItemHotCityBinding) : RecyclerView.ViewHolder(vb.root) {
 
         fun bind(
             hotCityClick: (LocationEntity) -> Unit,

@@ -40,7 +40,7 @@ class WeatherTrendAdapter(private val hourlyItems: List<Weather24Hour.HourlyItem
             vb.tvItemTrendTemp.text = string(R.string.celsius, hourlyItem.temp)
 
             val path = AssetsZipUtils.getFilePathByName(hourlyItem.icon)
-            Log.e("svg图->", path)
+           // Log.e("svg图->", path)
             vb.ivItemTrendInfo.loadSvg(path)
             //vb.ivItemTrendInfo.setImageResource(WeatherHelper.getIconResId(hourlyItem.text))
         }

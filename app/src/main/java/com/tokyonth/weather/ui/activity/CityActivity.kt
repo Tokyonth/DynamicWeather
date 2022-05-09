@@ -3,6 +3,7 @@ package com.tokyonth.weather.ui.activity
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.biubiu.eventbus.post.postEvent
 import com.google.android.material.snackbar.Snackbar
 
 import com.tokyonth.weather.databinding.ActivityCityBinding
@@ -15,7 +16,6 @@ import com.tokyonth.weather.ui.viewmodel.CityViewModel
 import com.tokyonth.weather.R
 import com.tokyonth.weather.data.entity.SavedLocationEntity
 import com.tokyonth.weather.data.event.CitySelectEvent
-import com.tokyonth.weather.utils.event.LifecycleEventBus
 import com.tokyonth.weather.utils.ktx.string
 
 class CityActivity : BaseActivity() {
@@ -42,7 +42,7 @@ class CityActivity : BaseActivity() {
         }
         cityAdapter.setOnItemClickListener(object : CityManageAdapter.OnItemClickListener {
             override fun onClick(view: View, position: Int) {
-                LifecycleEventBus.sendEvent(CitySelectEvent(position))
+                postEvent(CitySelectEvent(position))
                 finish()
             }
 

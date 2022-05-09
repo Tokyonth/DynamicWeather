@@ -43,18 +43,18 @@ class SplashActivity : BaseActivity() {
                   .create()
                   .show()
           }*/
-        permissionLauncher =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-                it.filter { map ->
-                    !map.value
-                }.isEmpty().let { all ->
-                    if (all) {
-                        model.importCityData()
-                    } else {
-                        snack(string(R.string.text_allow_permission))
-                    }
+        val contracts = ActivityResultContracts.RequestMultiplePermissions()
+        permissionLauncher = registerForActivityResult(contracts) {
+            it.filter { map ->
+                !map.value
+            }.isEmpty().let { all ->
+                if (all) {
+                    model.importCityData()
+                } else {
+                    snack(string(R.string.text_allow_permission))
                 }
             }
+        }
     }
 
     override fun initView() {

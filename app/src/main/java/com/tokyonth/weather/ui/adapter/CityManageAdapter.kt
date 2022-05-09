@@ -54,7 +54,7 @@ class CityManageAdapter : RecyclerView.Adapter<CityManageAdapter.CityManageViewH
         return savedLocationList.size
     }
 
-    class CityManageViewHolder(private val vb: ItemCityManageBinding) :
+    inner class CityManageViewHolder(private val vb: ItemCityManageBinding) :
         RecyclerView.ViewHolder(vb.root) {
 
         fun bind(listener: OnItemClickListener, savedLocationEntity: SavedLocationEntity) {

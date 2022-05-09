@@ -3,8 +3,11 @@ package com.tokyonth.weather.ui.activity
 import android.view.Menu
 import android.view.MenuItem
 import android.content.Intent
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import com.biubiu.eventbus.observe.observeEvent
 
 import com.tokyonth.weather.Constants
 import com.tokyonth.weather.base.BaseActivity
@@ -17,8 +20,6 @@ import com.tokyonth.weather.data.event.CityChangeEvent
 import com.tokyonth.weather.data.event.CitySelectEvent
 import com.tokyonth.weather.ui.viewmodel.MainViewModel
 import com.tokyonth.weather.utils.SPUtils.getSP
-import com.tokyonth.weather.utils.event.LifecycleEventBus
-import com.tokyonth.weather.utils.event.ThreadMode
 
 class MainActivity : BaseActivity() {
 
@@ -48,11 +49,15 @@ class MainActivity : BaseActivity() {
     override fun initView() {
         binding.toolbar.overflowIcon =
             ContextCompat.getDrawable(this, R.drawable.ic_more)
-        supportActionBar?.setHomeButtonEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.apply {
+            setHomeButtonEnabled(false)
+            setDisplayHomeAsUpEnabled(false)
+        }
 
-        binding.vpWeatherPage.adapter = pagerAdapter
-        binding.indicatorPager.attachToViewPager2(binding.vpWeatherPage)
+        binding.vpWeatherPage.apply {
+            adapter = pagerAdapter
+            binding.indicatorPager.attachToViewPager2(this)
+        }
     }
 
     override fun initObserve() {
@@ -70,21 +75,20 @@ class MainActivity : BaseActivity() {
             binding.weatherView.setDrawerType(drawType)
         }
 
-        LifecycleEventBus.setThreadMode(ThreadMode.MAIN)
-            .observe(this, CityChangeEvent::class.java) {
-                // model.getAllCityCount()
-                if (it.position != -1) {
-                    pagerAdapter?.removeData(it.position)
-                } else {
-                    pagerAdapter?.addData(it.savedLocationEntity!!)
-                }
-                binding.indicatorPager.setCount(pagerAdapter!!.itemCount)
+        observeEvent<CityChangeEvent>(minActiveState = Lifecycle.State.RESUMED) {
+            Log.e("event-->", "收到事件")
+            // model.getAllCityCount()
+            if (it.position != -1) {
+                pagerAdapter?.removeData(it.position)
+            } else {
+                pagerAdapter?.addData(it.savedLocationEntity!!)
             }
+            binding.indicatorPager.setCount(pagerAdapter!!.itemCount)
+        }
 
-        LifecycleEventBus.setThreadMode(ThreadMode.MAIN)
-            .observe(this, CitySelectEvent::class.java) {
-                binding.vpWeatherPage.currentItem = it.position
-            }
+        observeEvent<CitySelectEvent>(minActiveState = Lifecycle.State.RESUMED) {
+            binding.vpWeatherPage.currentItem = it.position
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

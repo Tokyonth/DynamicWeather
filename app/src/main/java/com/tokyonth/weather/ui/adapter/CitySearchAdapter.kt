@@ -29,7 +29,7 @@ class CitySearchAdapter(private val locationEntityList: List<LocationEntity>) :
         return locationEntityList.size
     }
 
-    class CitySearchViewHolder(private val vb: ItemSearchCityBinding) :
+    inner class CitySearchViewHolder(private val vb: ItemSearchCityBinding) :
         RecyclerView.ViewHolder(vb.root) {
 
         fun bind(onItemClick: (LocationEntity) -> Unit, locationEntity: LocationEntity) {

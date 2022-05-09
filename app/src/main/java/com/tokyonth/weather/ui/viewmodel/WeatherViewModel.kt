@@ -25,8 +25,9 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
 
     var dailyLiveData = MutableLiveData<Weather7Day>()
 
-    var refreshLiveData = MutableLiveData<Int>()
+    var refreshLiveData = MutableLiveData<Unit>()
 
+    @Volatile
     private var onFinishedApi = 0
 
     private var locationCode: String? = null
@@ -126,7 +127,7 @@ class WeatherViewModel(application: Application) : BaseViewModel(application) {
     private fun optApiCount() {
         onFinishedApi++
         if (onFinishedApi == 5) {
-            refreshLiveData.value = onFinishedApi
+            refreshLiveData.value = Unit
             onFinishedApi = 0
         }
     }

@@ -1,4 +1,4 @@
-package com.tokyonth.weather.dynamic
+package com.tokyonth.weather.dynamic.data
 
 enum class FpsType(private val id: Int) {
 

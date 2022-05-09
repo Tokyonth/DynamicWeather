@@ -1,6 +1,7 @@
 package com.tokyonth.weather.utils.manager
 
 import android.util.Log
+import androidx.lifecycle.*
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
@@ -8,7 +9,7 @@ import com.amap.api.location.AMapLocationListener
 
 import com.tokyonth.weather.App
 
-class AmapLocationManager {
+class AmapLocationManager : LifecycleEventObserver {
 
     companion object {
 
@@ -30,9 +31,9 @@ class AmapLocationManager {
         }
     }
 
-    fun currentLocal(locationObs: (Pair<String, String>?) -> Unit) {
-        this.locationObs = locationObs
-        startLocation()
+    fun currentLocal(owner: LifecycleOwner? = null, location: (Pair<String, String>?) -> Unit) {
+        owner?.lifecycle?.addObserver(this)
+        locationObs = location
     }
 
     private val defaultOption: AMapLocationClientOption
@@ -78,28 +79,36 @@ class AmapLocationManager {
             } else {
                 locationObs?.invoke(null)
             }
-            stopLocation()
         }
     }
 
-    private fun startLocation() {
+    fun start() {
         locationClient?.apply {
             setLocationOption(locationOption)
-            this.startLocation()
+            startLocation()
         }
     }
 
-    private fun stopLocation() {
+    fun stop() {
         locationClient?.run {
-            this.stopLocation()
-            this.onDestroy()
+            stopLocation()
         }
+        locationObs = null
         locationClient = null
         locationOption = null
     }
 
-    fun stop() {
-        stopLocation()
+    fun destroy() {
+        locationClient!!.onDestroy()
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        val state = source.lifecycle.currentState
+        if (state == Lifecycle.State.DESTROYED) {
+            locationClient?.onDestroy()
+            stop()
+            source.lifecycle.removeObserver(this)
+        }
     }
 
 }

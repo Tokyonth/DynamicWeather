@@ -31,9 +31,11 @@ class AirWeatherProvider : BaseWeatherProvider<WeatherAir, FragmentWeatherBindin
             weatherAirqualityTv.text = getData().now.category
             weatherAirqualityTv.setTextColor(airQualityColor)
             weatherAirqualityImageIv.setColorFilter(airQualityColor)
-            semicircleProgressView.setSesameValues(aqiIndex, defaultMax)
-            semicircleProgressView.semicircleTitleColor = airQualityColor
-            semicircleProgressView.frontLineColor = airQualityColor
+            semicircleProgressView.apply {
+                setSesameValues(aqiIndex, defaultMax)
+                semicircleTitleColor = airQualityColor
+                frontLineColor = airQualityColor
+            }
         }
 
         binding.pagerWeatherAqi.run {

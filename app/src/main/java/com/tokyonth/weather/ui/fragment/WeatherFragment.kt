@@ -1,20 +1,18 @@
 package com.tokyonth.weather.ui.fragment
 
 import android.content.Intent
+import android.provider.Settings
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 import com.tokyonth.weather.Constants
-import com.tokyonth.weather.R
 import com.tokyonth.weather.base.BaseFragment
 import com.tokyonth.weather.databinding.FragmentWeatherBinding
-import com.tokyonth.weather.ui.activity.CityActivity
-import com.tokyonth.weather.ui.viewmodel.WeatherViewModel
 import com.tokyonth.weather.ui.fragment.provider.*
 import com.tokyonth.weather.ui.viewmodel.MainViewModel
+import com.tokyonth.weather.ui.viewmodel.WeatherViewModel
 import com.tokyonth.weather.utils.ktx.lazyBind
-import com.tokyonth.weather.utils.ktx.string
 import com.tokyonth.weather.utils.manager.AmapLocationManager
 
 class WeatherFragment : BaseFragment() {
@@ -29,26 +27,28 @@ class WeatherFragment : BaseFragment() {
 
     private var cityName: String? = null
 
+    private var locationCode: String? = null
+
+    private var isDefaultLocation: Boolean? = null
+
     override fun setVbRoot() = binding
 
     override fun initData() {
-        val locationCode = arguments?.getString(Constants.INTENT_LOCATION_CODE)
-        val isDefaultLocation = arguments?.getBoolean(Constants.INTENT_IS_DEFAULT_LOCATION, false)
         cityName = arguments?.getString(Constants.INTENT_LOCATION_NAME)
+        locationCode = arguments?.getString(Constants.INTENT_LOCATION_CODE)
+        isDefaultLocation = arguments?.getBoolean(Constants.INTENT_IS_DEFAULT_LOCATION, false)
 
         if (isDefaultLocation == true) {
-            AmapLocationManager.INSTANCE.currentLocal {
+            AmapLocationManager.INSTANCE.currentLocal(this) {
                 if (it != null) {
                     model.pickLocation(it.first)
                     cityName = it.second
                     dyModel.cityChangeLiveData.value = cityName
                 } else {
-                    cannotFoundDefaultCity()
+                    cannotFoundLocation()
                 }
                 AmapLocationManager.INSTANCE.stop()
             }
-        } else {
-            model.setLocation(locationCode!!)
         }
     }
 
@@ -61,10 +61,16 @@ class WeatherFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!isLoaded) {
-            model.refreshWeather()
-            isLoaded = true
+        if (isDefaultLocation == true) {
+            AmapLocationManager.INSTANCE.start()
+        } else {
+            model.setLocation(locationCode!!)
+            if (!isLoaded) {
+                model.refreshWeather()
+                isLoaded = true
+            }
         }
+
         if (!cityName.isNullOrEmpty()) {
             dyModel.cityChangeLiveData.value = cityName
         }
@@ -97,21 +103,15 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
-    private fun cannotFoundDefaultCity() {
+    private fun cannotFoundLocation() {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(string(R.string.text_tips))
-            .setMessage(string(R.string.text_failed_location))
-            .setNegativeButton(
-                string(R.string.text_manual_selection)
-            ) { _, _ ->
-                startActivity(
-                    Intent(
-                        requireContext(),
-                        CityActivity::class.java
-                    )
-                )
+            .setTitle("开启定位服务")
+            .setMessage("天气需要开启定位服务, 以获取当前位置天气")
+            .setNegativeButton("取消", null)
+            .setPositiveButton("设置") { _, _ ->
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
             }
-            .setPositiveButton(string(R.string.text_cancel)) { _, _ -> requireActivity().finish() }
             .setCancelable(false)
             .create()
             .show()

@@ -35,9 +35,8 @@ class WeatherNotificationImpl(val context: Context, private val remoteViews: Rem
             return getNotificationManager().areNotificationsEnabled()
         }
         val mAppOps = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val info = context.applicationInfo
         val pag = context.applicationContext.packageName
-        val uid = info.uid
+        val uid = context.applicationInfo.uid
         try {
             val appOpsClass = Class.forName(AppOpsManager::class.java.name)
             val method = appOpsClass.getMethod(

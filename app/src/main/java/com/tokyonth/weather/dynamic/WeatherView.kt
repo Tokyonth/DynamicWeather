@@ -10,6 +10,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 import com.tokyonth.weather.dynamic.data.DynamicDrawerType
+import com.tokyonth.weather.dynamic.data.FpsType
 import com.tokyonth.weather.dynamic.data.SkyBackground
 import com.tokyonth.weather.dynamic.drawer.CloudyDrawer
 

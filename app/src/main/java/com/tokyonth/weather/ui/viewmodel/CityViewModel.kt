@@ -1,9 +1,9 @@
 package com.tokyonth.weather.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.biubiu.eventbus.post.postEvent
 import com.tokyonth.weather.base.BaseViewModel
 import com.tokyonth.weather.data.entity.LocationEntity
 import com.tokyonth.weather.data.db.DbManager
@@ -12,7 +12,6 @@ import com.tokyonth.weather.data.event.CityChangeEvent
 import com.tokyonth.weather.data.hf.WeatherNow
 import com.tokyonth.weather.network.ApiRepository
 import com.tokyonth.weather.network.requestResult
-import com.tokyonth.weather.utils.event.LifecycleEventBus
 import kotlinx.coroutines.launch
 
 class CityViewModel(application: Application) : BaseViewModel(application) {
@@ -49,7 +48,7 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
             } else {
                 position
             }
-            LifecycleEventBus.sendEvent(CityChangeEvent(position, null))
+            postEvent(CityChangeEvent(position, null))
         }
     }
 
@@ -63,11 +62,12 @@ class CityViewModel(application: Application) : BaseViewModel(application) {
                 savedCityEntity.apply {
                     autoId = id[0]
                 }
+                postEvent(CityChangeEvent(-1, savedCityEntity))
+                savedCityEntity
             } else {
                 null
             }
             savedCityLiveData.value = result
-            LifecycleEventBus.sendEvent(CityChangeEvent(-1, result))
         }
     }
 
